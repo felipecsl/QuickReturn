@@ -54,6 +54,8 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
+Check the [sample app](https://github.com/felipecsl/QuickReturn/blob/master/app/src/main/java/com/felipecsl/quickreturn/app/MainActivity.java) for an example of usage.
+
 ### Features
 
 * Supports dynamic adapters. That means you can add and remove items from your adapter and it will still work nicely.

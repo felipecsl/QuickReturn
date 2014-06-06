@@ -1,37 +1,40 @@
 package com.felipecsl.quickreturn.app;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.QuickReturnAttacher;
 import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
-import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnListView;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    private QuickReturnListView quickReturnListView;
-    private QuickReturnAdapter quickReturnAdapter;
+    private ListView listView;
     private ArrayAdapter<String> adapter;
     private int offset = 0;
+    private QuickReturnAttacher quickReturnAttacher;
+    private TextView quickReturnTarget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        quickReturnListView = (QuickReturnListView) findViewById(R.id.listView);
-        TextView quickReturnTarget = (TextView) findViewById(R.id.quickReturnTarget);
+        listView = (ListView) findViewById(R.id.listView);
+        quickReturnTarget = (TextView) findViewById(R.id.quickReturnTarget);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         addMoreItems(100);
 
-        quickReturnAdapter = new QuickReturnAdapter(adapter);
-        quickReturnListView.setAdapter(quickReturnAdapter);
-        quickReturnListView.setQuickReturnView(quickReturnTarget);
+        listView.setAdapter(new QuickReturnAdapter(adapter));
+        quickReturnAttacher = new QuickReturnAttacher(listView, quickReturnTarget);
     }
 
     private void addMoreItems(final int amount) {
@@ -55,9 +58,25 @@ public class MainActivity extends ActionBarActivity {
         } else if (id == R.id.reset) {
             reset();
         } else if (id == R.id.animated) {
-            quickReturnListView.setAnimatedTransition(!quickReturnListView.isAnimatedTransition());
-            item.setTitle(quickReturnListView.isAnimatedTransition() ? "Disable animated transition" : "Enable animated transition");
+            quickReturnAttacher.setAnimatedTransition(!quickReturnAttacher.isAnimatedTransition());
+            item.setTitle(quickReturnAttacher.isAnimatedTransition() ? "Disable animated transition" : "Enable animated transition");
             reset();
+        } else if (id == R.id.position) {
+            int newPos;
+            final FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) quickReturnTarget.getLayoutParams();
+            String newTitle;
+            if (quickReturnAttacher.getPosition() == QuickReturnAttacher.POSITION_TOP) {
+                newPos = QuickReturnAttacher.POSITION_BOTTOM;
+                layoutParams.gravity = Gravity.BOTTOM;
+                newTitle = "Move to top";
+            } else {
+                newPos = QuickReturnAttacher.POSITION_TOP;
+                layoutParams.gravity = Gravity.TOP;
+                newTitle = "Move to bottom";
+            }
+            item.setTitle(newTitle);
+            quickReturnTarget.setLayoutParams(layoutParams);
+            quickReturnAttacher = new QuickReturnAttacher(listView, quickReturnTarget, newPos);
         }
         return true;
     }

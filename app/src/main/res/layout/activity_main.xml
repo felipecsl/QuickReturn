@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnListView
+    <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
@@ -14,7 +14,6 @@
         android:id="@+id/quickReturnTarget"
         android:text="Quick return target"
         android:gravity="center"
-        android:layout_gravity="bottom"
         android:textColor="#efefef"
         android:textSize="18sp"
         android:background="#cc0000"

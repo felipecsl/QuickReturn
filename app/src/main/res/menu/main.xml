@@ -20,4 +20,10 @@
         android:title="Enable animated transition"
         android:orderInCategory="100"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/position"
+        android:title="Move to bottom"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
 </menu>

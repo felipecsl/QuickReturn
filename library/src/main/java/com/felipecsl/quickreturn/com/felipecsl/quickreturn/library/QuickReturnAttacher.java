@@ -1,19 +1,17 @@
-package com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget;
+package com.felipecsl.quickreturn.com.felipecsl.quickreturn.library;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.os.Build;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.QuickReturnStateTransition;
-import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.SimpleAnimationListener;
+import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 
-public class QuickReturnListView extends ListView implements AbsListView.OnScrollListener {
+public class QuickReturnAttacher implements AbsListView.OnScrollListener {
 
     private static final String TAG = "QuickReturnListView";
     private static final int STATE_ONSCREEN = 0;
@@ -23,9 +21,10 @@ public class QuickReturnListView extends ListView implements AbsListView.OnScrol
 
     public static final int POSITION_TOP = 0;
     public static final int POSITION_BOTTOM = 1;
+    private final ListView listView;
 
     private int currentState = STATE_ONSCREEN;
-    private int position = POSITION_BOTTOM;
+    private int position;
     private int minRawY;
     private View quickReturnView;
     private boolean noAnimation;
@@ -35,10 +34,33 @@ public class QuickReturnListView extends ListView implements AbsListView.OnScrol
     private final AnimatedQuickReturnStateTransition animatedTransition = new AnimatedQuickReturnStateTransition();
     private final BottomQuickReturnStateTransition bottomTransition = new BottomQuickReturnStateTransition();
 
-    public QuickReturnListView(final Context context, final AttributeSet attrs) {
-        super(context, attrs);
+    public QuickReturnAttacher(final ListView listView, final View targetView, final int position) {
+        this.listView = listView;
+        this.quickReturnView = targetView;
+        this.position = position;
 
-        setOnScrollListener(this);
+        listView.setOnScrollListener(this);
+    }
+
+    public QuickReturnAttacher(final ListView listView, final View targetView) {
+        this(listView, targetView, POSITION_TOP);
+    }
+
+    public View getTargetView() {
+        return quickReturnView;
+    }
+
+    public void setTargetView(final View quickReturnView) {
+        this.quickReturnView = quickReturnView;
+    }
+
+    private QuickReturnAdapter getAdapter() {
+        final ListAdapter adapter = listView.getAdapter();
+
+        if (!(adapter instanceof QuickReturnAdapter))
+            throw new UnsupportedOperationException("Your QuickReturn ListView adapter must be an instance of QuickReturnAdapter.");
+
+        return (QuickReturnAdapter) adapter;
     }
 
     @Override
@@ -47,21 +69,14 @@ public class QuickReturnListView extends ListView implements AbsListView.OnScrol
     }
 
     public int getComputedScrollY() {
-        if (getChildCount() == 0 || getAdapter() == null)
+        if (listView.getChildCount() == 0 || listView.getAdapter() == null)
             return 0;
 
-        int pos = getFirstVisiblePosition();
-        final View view = getChildAt(0);
+        int pos = listView.getFirstVisiblePosition();
+        final View view = listView.getChildAt(0);
         return getAdapter().getPositionVerticalOffset(pos) - view.getTop();
     }
 
-    public void setAdapter(final QuickReturnAdapter adapter) {
-        super.setAdapter(adapter);
-    }
-
-    public void setQuickReturnView(final View quickReturnView) {
-        this.quickReturnView = quickReturnView;
-    }
 
     /**
      * Returns the quick return target view alignment.
@@ -74,25 +89,21 @@ public class QuickReturnListView extends ListView implements AbsListView.OnScrol
     /**
      * Sets the quick return target view alignment to
      * either 0 (POSITION_TOP) or 1 (POSITION_BOTTOM).
+     *
      * @param newPosition The new position
      */
     public void setPosition(int newPosition) {
         position = newPosition;
     }
 
-    @Override
-    public QuickReturnAdapter getAdapter() {
-        return (QuickReturnAdapter) super.getAdapter();
-    }
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
-        if (getAdapter() == null || quickReturnView == null)
+        if (listView.getAdapter() == null || quickReturnView == null)
             return;
 
         final int scrollY = getComputedScrollY();
-        final int rawY = -Math.min(getAdapter().getMaxVerticalOffset() - getHeight(), scrollY);
+        final int rawY = -Math.min(getAdapter().getMaxVerticalOffset() - listView.getHeight(), scrollY);
         final int quickReturnHeight = quickReturnView.getHeight();
         int translationY;
 
