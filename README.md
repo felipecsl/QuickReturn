@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     // ...
-    compile 'com.felipecsl:quickreturn:1.0.+'
+    compile 'com.felipecsl:quickreturn:1.1.+'
 }
 ```
 
@@ -35,22 +35,32 @@ In your layout xml:
 In your activity class:
 
 ```java
+private ListView listView;
+private ArrayAdapter<String> adapter;
+private QuickReturnAttacher quickReturnAttacher;
+private TextView quickReturnTarget;
+
 @Override
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     setContentView(R.layout.activity_main);
-    quickReturnListView = (QuickReturnListView) findViewById(R.id.listView);
+
+    // your listView :)
+    listView = (ListView) findViewById(R.id.listView);
 
     // the quick return target view to be hidden/displayed
-    TextView quickReturnTarget = (TextView) findViewById(R.id.quickReturnTarget);
+    quickReturnTarget = (TextView) findViewById(R.id.quickReturnTarget);
 
     // your inner adapter
     adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
     // Wrap your adapter with QuickReturnAdapter
-    quickReturnAdapter = new QuickReturnAdapter(adapter);
-    quickReturnListView.setAdapter(quickReturnAdapter);
-    quickReturnListView.setQuickReturnView(quickReturnTarget);
+    quickReturnListView.setAdapter(new QuickReturnAdapter(adapter));
+
+    // Attach a QuickReturnAttacher, which takes care of all of the hide/show functionality.
+    // You can optionally pass a position argument (defaults to POSITION_TOP).
+    quickReturnAttacher = new QuickReturnAttacher(listView, quickReturnTarget);
 }
 ```
 
@@ -68,6 +78,10 @@ Works with Android 2.3.x and above.
 ### Caveats
 
 * None yet.
+
+### Changelog
+
+Please see the [Changelog](https://github.com/felipecsl/QuickReturn/blob/master/CHANGELOG.md) to check what's recently changed.
 
 ### Credits
 
