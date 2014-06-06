@@ -50,15 +50,20 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
-Supports dynamic adapters. That means you can add and remove items from your adapter and it will still work nicely.
-QuickReturn uses composition over inheritance. That means you don't have to subclass QuickReturnAdapter in order to use it.
-Just pass your own adapter to the constructor and you're done.
+* Supports dynamic adapters. That means you can add and remove items from your adapter and it will still work nicely.
+* QuickReturn uses composition over inheritance. That means you don't have to subclass QuickReturnAdapter in order to use it. Just pass your own adapter to the constructor and you're done.
+* Supports animated quick return transitions via ``QuickReturnListView.setAnimatedTransition``
+* Supports bottom (footer) quick return position via ``QuickReturnListView.setPosition(QuickReturnListView.POSITION_BOTTOM).``
 
 Works with Android 2.3.x and above.
 
 ### Caveats
 
 * None yet.
+
+### Credits
+
+Heavily inspired/influenced by the [nice work of Roman Nurik's and Nick Butcher's](https://plus.google.com/+RomanNurik/posts/1Sb549FvpJt) and Lars Werkman's [QuickReturnListView](https://github.com/LarsWerkman/QuickReturnListView)
 
 ### Contributing
 

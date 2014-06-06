@@ -88,14 +88,14 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
         return wrappedAdapter.isEmpty();
     }
 
-    public int getPositionOffsetY(int position) {
+    public int getPositionVerticalOffset(int position) {
         if (position >= itemsVerticalOffset.length)
             return 0;
 
         return itemsVerticalOffset[position];
     }
 
-    public int getMaxOffsetY() {
+    public int getMaxVerticalOffset() {
         final List<Integer> items = new ArrayList<>(itemsVerticalOffset.length);
         for (final int aMItemOffsetY : itemsVerticalOffset) items.add(aMItemOffsetY);
         return Collections.max(items);

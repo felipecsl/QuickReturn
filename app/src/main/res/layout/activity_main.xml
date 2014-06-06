@@ -14,6 +14,7 @@
         android:id="@+id/quickReturnTarget"
         android:text="Quick return target"
         android:gravity="center"
+        android:layout_gravity="bottom"
         android:textColor="#efefef"
         android:textSize="18sp"
         android:background="#cc0000"
