@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.felipecsl.quickreturn.QuickReturnAdapter;
@@ -15,24 +13,32 @@ import com.felipecsl.quickreturn.QuickReturnListView;
 
 public class MainActivity extends ActionBarActivity {
 
-    private QuickReturnListView listView;
-    private QuickReturnAdapter listAdapter;
+    private QuickReturnListView quickReturnListView;
+    private QuickReturnAdapter quickReturnAdapter;
+    private ArrayAdapter<String> adapter;
+    private int offset = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = (QuickReturnListView) findViewById(R.id.listView);
+        quickReturnListView = (QuickReturnListView) findViewById(R.id.listView);
         TextView quickReturnTarget = (TextView) findViewById(R.id.quickReturnTarget);
 
-        final ArrayAdapter<String> wrappedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        for (int i = 0; i < 100; i++)
-            wrappedAdapter.add("Item " + String.valueOf(i));
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        addMoreItems(100);
 
-        listAdapter = new QuickReturnAdapter(wrappedAdapter);
-        listView.setAdapter(listAdapter);
-        listView.setQuickReturnView(quickReturnTarget);
+        quickReturnAdapter = new QuickReturnAdapter(adapter);
+        quickReturnListView.setAdapter(quickReturnAdapter);
+        quickReturnListView.setQuickReturnView(quickReturnTarget);
+    }
+
+    private void addMoreItems(final int amount) {
+        for (int i = 0; i < amount; i++)
+            adapter.add("Item " + String.valueOf(offset + i));
+
+        offset += amount;
     }
 
     @Override
@@ -48,9 +54,13 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.add_more) {
+            addMoreItems(100);
+        } else if (id == R.id.reset) {
+            adapter.clear();
+            offset = 0;
+            addMoreItems(100);
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }

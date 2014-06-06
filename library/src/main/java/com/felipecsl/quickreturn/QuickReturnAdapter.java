@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,12 +13,13 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
 
     private final ListAdapter wrappedAdapter;
     private final int emptyMeasureSpec;
-    private int[] mItemOffsetY;
+    private int[] itemsVerticalOffset;
 
     public QuickReturnAdapter(final ListAdapter wrappedAdapter) {
         this.wrappedAdapter = wrappedAdapter;
         emptyMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        mItemOffsetY = new int[wrappedAdapter.getCount()];
+        itemsVerticalOffset = new int[wrappedAdapter.getCount()];
+        wrappedAdapter.registerDataSetObserver(this);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
         v.measure(emptyMeasureSpec, emptyMeasureSpec);
 
         if (position + 1 < getCount())
-            mItemOffsetY[position + 1] = mItemOffsetY[position] + v.getMeasuredHeight();
+            itemsVerticalOffset[position + 1] = itemsVerticalOffset[position] + v.getMeasuredHeight();
 
         return v;
     }
@@ -89,15 +89,27 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
     }
 
     public int getPositionOffsetY(int position) {
-        if (position >= mItemOffsetY.length)
+        if (position >= itemsVerticalOffset.length)
             return 0;
 
-        return mItemOffsetY[position];
+        return itemsVerticalOffset[position];
     }
 
     public int getMaxOffsetY() {
-        final List<Integer> items = new ArrayList<>(mItemOffsetY.length);
-        for (final int aMItemOffsetY : mItemOffsetY) items.add(aMItemOffsetY);
+        final List<Integer> items = new ArrayList<>(itemsVerticalOffset.length);
+        for (final int aMItemOffsetY : itemsVerticalOffset) items.add(aMItemOffsetY);
         return Collections.max(items);
+    }
+
+    @Override
+    public void onChanged() {
+        super.onChanged();
+
+        if (wrappedAdapter.getCount() < itemsVerticalOffset.length)
+            return;
+
+        int[] newArray = new int[wrappedAdapter.getCount()];
+        System.arraycopy(itemsVerticalOffset, 0, newArray, 0, Math.min(itemsVerticalOffset.length, newArray.length));
+        itemsVerticalOffset = newArray;
     }
 }

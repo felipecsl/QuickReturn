@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
@@ -100,8 +99,6 @@ public class QuickReturnListView extends ListView implements AbsListView.OnScrol
                 }
                 break;
         }
-
-        Log.d(TAG, "Translation Y = " + translationY);
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) {
             final TranslateAnimation anim = new TranslateAnimation(0, 0, translationY, translationY);
