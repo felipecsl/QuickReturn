@@ -1,7 +1,7 @@
 mvn install:install-file \
 -DgroupId=com.felipecsl \
 -DartifactId=quickreturn \
--Dversion=1.0.$1-SNAPSHOT \
+-Dversion=1.1.$1-SNAPSHOT \
 -DgeneratePom=true \
 -Dpackaging=aar \
 -Dfile=library/build/libs/library.aar \
