@@ -1,0 +1,23 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.felipecsl.quickreturn.QuickReturnListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/quickReturnTarget"
+        android:text="Quick return target"
+        android:gravity="center"
+        android:textColor="#efefef"
+        android:textSize="18sp"
+        android:background="#cc0000"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+</FrameLayout>
