@@ -2,6 +2,10 @@
 
 Android ListView that implements the QuickReturn UI pattern. Written from scratch with focus on performance.
 
+### Demo
+
+[![video thumbnail](http://img.youtube.com/vi/BwLjMMIWNQU/hqdefault.jpg)](https://www.youtube.com/watch?v=BwLjMMIWNQU)
+
 ### Usage
 
 In your ``build.gradle`` file:
