@@ -43,13 +43,16 @@ protected void onCreate(Bundle savedInstanceState) {
     // your inner adapter
     adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
+    // Wrap your adapter with QuickReturnAdapter
     quickReturnAdapter = new QuickReturnAdapter(adapter);
     quickReturnListView.setAdapter(quickReturnAdapter);
     quickReturnListView.setQuickReturnView(quickReturnTarget);
 }
 ```
 
-Supports dynamic adapter. That means you can add and remove items from your adapter and it will still work nicely.
+Supports dynamic adapters. That means you can add and remove items from your adapter and it will still work nicely.
+QuickReturn uses composition over inheritance. That means you don't have to subclass QuickReturnAdapter in order to use it.
+Just pass your own adapter to the constructor and you're done.
 
 Works with Android 2.3.x and above.
 
