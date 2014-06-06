@@ -22,16 +22,6 @@ dependencies {
 }
 ```
 
-In your layout xml:
-
-```xml
-<com.felipecsl.quickreturn.library.widget.QuickReturnListView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/listView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
-```
-
 In your activity class:
 
 ```java
