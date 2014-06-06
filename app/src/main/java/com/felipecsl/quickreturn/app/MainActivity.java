@@ -7,8 +7,8 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.felipecsl.quickreturn.QuickReturnAdapter;
-import com.felipecsl.quickreturn.QuickReturnListView;
+import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
+import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnListView;
 
 
 public class MainActivity extends ActionBarActivity {

@@ -1,4 +1,4 @@
-package com.felipecsl.quickreturn;
+package com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.ListView;
+
+import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 
 public class QuickReturnListView extends ListView implements AbsListView.OnScrollListener {
 
