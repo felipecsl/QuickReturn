@@ -59,11 +59,11 @@ Check the [sample app](https://github.com/felipecsl/QuickReturn/blob/master/app/
 ### Features
 
 * Supports dynamic adapters. That means you can add and remove items from your adapter and it will still work nicely.
-* Uses composition over inheritance. That means you don't have to subclass ``QuickReturnAdapter`` in order to use it. Just pass your own adapter to the constructor and you're done.
-* Animated transitions via ``QuickReturnListView.setAnimatedTransition(true)``
-* Supports bottom (footer) quick return position via ``QuickReturnListView.setPosition(QuickReturnListView.POSITION_BOTTOM).``
+* You don't have to subclass ``QuickReturnAdapter`` in order to use it. Just pass your own adapter to the constructor and you're done.
+* Animated transitions via ``QuickReturnAttacher.setAnimatedTransition(true)``
+* Supports bottom (footer) quick return position via ``QuickReturnAttacher.setPosition(QuickReturnListView.POSITION_BOTTOM).``
 
-Works with Android 2.3.x and above.
+Works with API Level 10 and above.
 
 ### Caveats
 
