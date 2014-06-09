@@ -1,7 +1,8 @@
-# Version 1.2
+# Version 1.2.0
 
 * Fixes problem with using ``ListView.setOnScrollListener()`` outside of ``QuickReturnAttacher`` would cause QuickReturn to stop working. Scroll listeners should be added via ``QuickReturnAttacher.addOnScrollListener()``.
 * Prevents crash in ``QuickReturnAttacher.setAnimatedTransition(true)`` on Gingerbread. Ignores call and logs warning instead.
+* Prevents crash with empty adapter in ``QuickReturnAdapter.getMaxVerticalOffset()``
 
 # Version 1.1
 
