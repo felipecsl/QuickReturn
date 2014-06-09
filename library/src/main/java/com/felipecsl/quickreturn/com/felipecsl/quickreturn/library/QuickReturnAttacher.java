@@ -2,6 +2,7 @@ package com.felipecsl.quickreturn.com.felipecsl.quickreturn.library;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -138,6 +139,10 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
     }
 
     public void setAnimatedTransition(final boolean isAnimatedTransition) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            Log.w(TAG, "Animated QuickReturn is only supported by Android API Level 11+");
+            return;
+        }
         this.isAnimatedTransition = isAnimatedTransition;
         currentState = STATE_ONSCREEN;
         minRawY = 0;
@@ -188,6 +193,7 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
     }
 
     class AnimatedQuickReturnStateTransition implements QuickReturnStateTransition {
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         public int determineState(final int rawY, int quickReturnHeight) {
             int translationY = 0;
 
@@ -220,7 +226,9 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
                         currentState = STATE_OFFSCREEN;
                         minRawY = rawY;
 
-                    } else if (quickReturnView.getTranslationY() != 0 && !noAnimation) {
+                    } else if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && quickReturnView.getTranslationY() != 0) &&
+                            !noAnimation) {
+
                         noAnimation = true;
                         final TranslateAnimation anim = new TranslateAnimation(0, 0, -quickReturnHeight, 0);
                         anim.setFillAfter(true);
