@@ -34,12 +34,15 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
     private final AnimatedQuickReturnStateTransition animatedTransition = new AnimatedQuickReturnStateTransition();
     private final BottomQuickReturnStateTransition bottomTransition = new BottomQuickReturnStateTransition();
 
+    private final CompositeOnScrollListener onScrollListener = new CompositeOnScrollListener();
+
     public QuickReturnAttacher(final ListView listView, final View targetView, final int position) {
         this.listView = listView;
         this.quickReturnView = targetView;
         this.position = position;
 
-        listView.setOnScrollListener(this);
+        onScrollListener.registerOnScrollListener(this);
+        listView.setOnScrollListener(onScrollListener);
     }
 
     public QuickReturnAttacher(final ListView listView, final View targetView) {
@@ -61,6 +64,10 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
             throw new UnsupportedOperationException("Your QuickReturn ListView adapter must be an instance of QuickReturnAdapter.");
 
         return (QuickReturnAdapter) adapter;
+    }
+
+    public void addOnScrollListener(final AbsListView.OnScrollListener listener) {
+        onScrollListener.registerOnScrollListener(listener);
     }
 
     @Override

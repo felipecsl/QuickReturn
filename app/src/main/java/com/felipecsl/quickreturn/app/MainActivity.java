@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -14,7 +15,7 @@ import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.QuickReturnAt
 import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener {
 
     private ListView listView;
     private ArrayAdapter<String> adapter;
@@ -35,6 +36,11 @@ public class MainActivity extends ActionBarActivity {
 
         listView.setAdapter(new QuickReturnAdapter(adapter));
         quickReturnAttacher = new QuickReturnAttacher(listView, quickReturnTarget);
+
+        // This is the correct way to register an OnScrollListener.
+        // You have to add it on the QuickReturnAttacher, instead
+        // of on the listView directly.
+        quickReturnAttacher.addOnScrollListener(this);
     }
 
     private void addMoreItems(final int amount) {
@@ -85,5 +91,14 @@ public class MainActivity extends ActionBarActivity {
         adapter.clear();
         offset = 0;
         addMoreItems(100);
+    }
+
+    @Override
+    public void onScrollStateChanged(final AbsListView view, final int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
     }
 }
