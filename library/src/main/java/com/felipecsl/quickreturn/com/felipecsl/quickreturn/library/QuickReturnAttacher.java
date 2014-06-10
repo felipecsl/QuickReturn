@@ -9,6 +9,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.WrapperListAdapter;
 
 import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 
@@ -59,7 +60,10 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
     }
 
     private QuickReturnAdapter getAdapter() {
-        final ListAdapter adapter = listView.getAdapter();
+        ListAdapter adapter = listView.getAdapter();
+
+        if (adapter instanceof WrapperListAdapter)
+            adapter = ((WrapperListAdapter) adapter).getWrappedAdapter();
 
         if (!(adapter instanceof QuickReturnAdapter))
             throw new UnsupportedOperationException("Your QuickReturn ListView adapter must be an instance of QuickReturnAdapter.");
