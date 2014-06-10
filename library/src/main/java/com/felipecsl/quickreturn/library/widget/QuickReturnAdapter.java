@@ -1,4 +1,4 @@
-package com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget;
+package com.felipecsl.quickreturn.library.widget;
 
 import android.database.DataSetObserver;
 import android.view.View;

@@ -11,9 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.QuickReturnAttacher;
-import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
-
+import com.felipecsl.quickreturn.library.QuickReturnAttacher;
+import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 
 public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener {
 
