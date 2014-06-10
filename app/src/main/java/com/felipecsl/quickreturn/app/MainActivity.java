@@ -32,7 +32,7 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
         quickReturnTarget = (TextView) findViewById(R.id.quickReturnTarget);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        addMoreItems(100);
+        addMoreItems(20);
 
         listView.setAdapter(new QuickReturnAdapter(adapter));
         quickReturnAttacher = new QuickReturnAttacher(listView, quickReturnTarget);
@@ -60,7 +60,7 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.add_more) {
-            addMoreItems(100);
+            addMoreItems(10);
         } else if (id == R.id.reset) {
             reset();
         } else if (id == R.id.animated) {
@@ -90,7 +90,7 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
     private void reset() {
         adapter.clear();
         offset = 0;
-        addMoreItems(100);
+        addMoreItems(10);
     }
 
     @Override

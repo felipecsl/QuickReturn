@@ -114,7 +114,12 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
             return;
 
         final int scrollY = getComputedScrollY();
-        final int rawY = -Math.min(getAdapter().getMaxVerticalOffset() - listView.getHeight(), scrollY);
+        final int maxVerticalOffset = getAdapter().getMaxVerticalOffset();
+        final int listViewHeight = listView.getHeight();
+        final int rawY = -Math.min(maxVerticalOffset > listViewHeight
+                ? maxVerticalOffset - listViewHeight
+                : listViewHeight, scrollY);
+
         final int quickReturnHeight = quickReturnView.getHeight();
         int translationY;
 
@@ -202,11 +207,11 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
 
             switch (currentState) {
                 case STATE_OFFSCREEN:
-                    if (rawY <= minRawY) {
+                    if (rawY <= minRawY)
                         minRawY = rawY;
-                    } else {
+                    else
                         currentState = STATE_RETURNING;
-                    }
+
                     translationY = rawY;
                     break;
 
