@@ -1,6 +1,7 @@
 package com.felipecsl.quickreturn.app;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.Menu;
@@ -8,26 +9,40 @@ import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.ListView;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
 import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 
-public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener {
+public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener, ActionBar.OnNavigationListener {
 
-    private ListView listView;
+    private AbsListView listView;
     private ArrayAdapter<String> adapter;
-    private int offset = 0;
+    private int offset;
     private QuickReturnAttacher quickReturnAttacher;
     private TextView quickReturnTarget;
+    private int currentPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = (ListView) findViewById(R.id.listView);
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("");
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        final String[] actionBarItems = {"QuickReturn w/ ListView", "QuickReturn w/ GridView"};
+        final SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this, R.layout.action_bar_spinner_text, actionBarItems);
+
+        actionBar.setListNavigationCallbacks(spinnerAdapter, this);
+
+        initialize();
+    }
+
+    private void initialize() {
+        offset = 0;
+        listView = (AbsListView) findViewById(R.id.listView);
         quickReturnTarget = (TextView) findViewById(R.id.quickReturnTarget);
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
@@ -99,5 +114,21 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
 
     @Override
     public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(final int itemPos, final long itemId) {
+        if (itemPos == currentPos)
+            return false;
+
+        if (itemPos == 0)
+            setContentView(R.layout.activity_main);
+        else
+            setContentView(R.layout.activity_main_grid);
+
+        currentPos = itemPos;
+        initialize();
+
+        return true;
     }
 }

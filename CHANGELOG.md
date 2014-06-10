@@ -1,3 +1,7 @@
+# Version 1.2.3
+
+* Fixes messed up package names
+
 # Version 1.2.2
 
 * Fixes incorrect quick return view position when listview adapter has not enough items to fill the screen.
