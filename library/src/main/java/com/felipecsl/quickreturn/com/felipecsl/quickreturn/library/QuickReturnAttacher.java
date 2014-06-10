@@ -8,7 +8,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.WrapperListAdapter;
 
 import com.felipecsl.quickreturn.com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
@@ -23,7 +22,7 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
 
     public static final int POSITION_TOP = 0;
     public static final int POSITION_BOTTOM = 1;
-    private final ListView listView;
+    private final AbsListView listView;
 
     private int currentState = STATE_ONSCREEN;
     private int position;
@@ -38,7 +37,7 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
 
     private final CompositeOnScrollListener onScrollListener = new CompositeOnScrollListener();
 
-    public QuickReturnAttacher(final ListView listView, final View targetView, final int position) {
+    public QuickReturnAttacher(final AbsListView listView, final View targetView, final int position) {
         this.listView = listView;
         this.quickReturnView = targetView;
         this.position = position;
@@ -47,7 +46,7 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
         listView.setOnScrollListener(onScrollListener);
     }
 
-    public QuickReturnAttacher(final ListView listView, final View targetView) {
+    public QuickReturnAttacher(final AbsListView listView, final View targetView) {
         this(listView, targetView, POSITION_TOP);
     }
 
