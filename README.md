@@ -68,6 +68,7 @@ Check the [sample app](https://github.com/felipecsl/QuickReturn/blob/master/app/
 * You don't have to subclass ``QuickReturnAdapter`` in order to use it. Just pass your own adapter to the constructor and you're done.
 * Animated transitions via ``QuickReturnAttacher.setAnimatedTransition(true)``
 * Supports bottom (footer) quick return position via ``QuickReturnAttacher.setPosition(QuickReturnListView.POSITION_BOTTOM).``
+* You can use it with any subclass of ``AbsListView``, including ``ListView`` and ``GridView``.
 
 Works with API Level 10 and above.
 

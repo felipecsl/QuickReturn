@@ -1,3 +1,12 @@
+# Version 1.2.2
+
+* Fixes incorrect quick return view position when listview adapter has not enough items to fill the screen.
+* QuickReturnAttacher constructor now takes AbsListView instead of ListView, so you can use any concrete implementation with it.
+
+# Version 1.2.1
+
+* Allows the listView adapter to be an instance of WrapperListAdapter.
+
 # Version 1.2.0
 
 * Fixes problem with using ``ListView.setOnScrollListener()`` outside of ``QuickReturnAttacher`` would cause QuickReturn to stop working. Scroll listeners should be added via ``QuickReturnAttacher.addOnScrollListener()``.
