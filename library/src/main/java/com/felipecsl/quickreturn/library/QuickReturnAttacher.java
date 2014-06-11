@@ -25,23 +25,22 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
     private final AbsListView listView;
 
     private int currentState = STATE_ONSCREEN;
-    private int position;
     private int minRawY;
     private View quickReturnView;
     private boolean noAnimation;
-    private boolean isAnimatedTransition;
 
     private final SimpleQuickReturnStateTransition defaultTransition = new SimpleQuickReturnStateTransition();
     private final AnimatedQuickReturnStateTransition animatedTransition = new AnimatedQuickReturnStateTransition();
     private final BottomQuickReturnStateTransition bottomTransition = new BottomQuickReturnStateTransition();
 
+    private QuickReturnStateTransition currentTransition;
+
     private final CompositeOnScrollListener onScrollListener = new CompositeOnScrollListener();
 
     public QuickReturnAttacher(final AbsListView listView, final View targetView, final int position) {
         this.listView = listView;
-        this.quickReturnView = targetView;
-        this.position = position;
-
+        quickReturnView = targetView;
+        setPosition(position);
         onScrollListener.registerOnScrollListener(this);
         listView.setOnScrollListener(onScrollListener);
     }
@@ -94,7 +93,11 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
      * Will be either 0 (POSITION_TOP) or 1 (POSITION_BOTTOM)
      */
     public int getPosition() {
-        return position;
+        if (currentTransition.equals(defaultTransition) ||
+                currentTransition.equals(animatedTransition))
+            return POSITION_TOP;
+
+        return POSITION_BOTTOM;
     }
 
     /**
@@ -104,34 +107,29 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
      * @param newPosition The new position
      */
     public void setPosition(int newPosition) {
-        position = newPosition;
+        currentTransition = newPosition == POSITION_TOP
+                ? defaultTransition
+                : bottomTransition;
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
         if (listView.getAdapter() == null || quickReturnView == null)
             return;
 
-        final int scrollY = getComputedScrollY();
         final int maxVerticalOffset = getAdapter().getMaxVerticalOffset();
         final int listViewHeight = listView.getHeight();
         final int rawY = -Math.min(maxVerticalOffset > listViewHeight
                 ? maxVerticalOffset - listViewHeight
-                : listViewHeight, scrollY);
+                : listViewHeight, getComputedScrollY());
 
-        final int quickReturnHeight = quickReturnView.getHeight();
-        int translationY;
+        final int translationY = currentTransition.determineState(rawY, quickReturnView.getHeight());
 
-        if (position == POSITION_TOP) {
-            if (isAnimatedTransition)
-                translationY = animatedTransition.determineState(rawY, quickReturnHeight);
-            else
-                translationY = defaultTransition.determineState(rawY, quickReturnHeight);
-        } else {
-            translationY = bottomTransition.determineState(rawY, quickReturnHeight);
-        }
+        translateTo(translationY);
+    }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void translateTo(final int translationY) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) {
             final TranslateAnimation anim = new TranslateAnimation(0, 0, translationY, translationY);
             anim.setFillAfter(true);
@@ -143,7 +141,7 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
     }
 
     public boolean isAnimatedTransition() {
-        return isAnimatedTransition;
+        return currentTransition.equals(animatedTransition);
     }
 
     public void setAnimatedTransition(final boolean isAnimatedTransition) {
@@ -151,7 +149,7 @@ public class QuickReturnAttacher implements AbsListView.OnScrollListener {
             Log.w(TAG, "Animated QuickReturn is only supported by Android API Level 11+");
             return;
         }
-        this.isAnimatedTransition = isAnimatedTransition;
+        this.currentTransition = isAnimatedTransition ? animatedTransition : defaultTransition;
         currentState = STATE_ONSCREEN;
         minRawY = 0;
     }
