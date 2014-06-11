@@ -45,8 +45,8 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
         listView = (AbsListView) findViewById(R.id.listView);
         quickReturnTarget = (TextView) findViewById(R.id.quickReturnTarget);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        addMoreItems(20);
+        adapter = new ArrayAdapter<>(this, R.layout.list_item);
+        addMoreItems(100);
 
         listView.setAdapter(new QuickReturnAdapter(adapter));
         quickReturnAttacher = new QuickReturnAttacher(listView, quickReturnTarget);
