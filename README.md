@@ -49,8 +49,11 @@ protected void onCreate(Bundle savedInstanceState) {
     quickReturnListView.setAdapter(new QuickReturnAdapter(adapter));
 
     // Attach a QuickReturnAttacher, which takes care of all of the hide/show functionality.
-    // You can optionally pass a position argument (defaults to POSITION_TOP).
-    quickReturnAttacher = new QuickReturnAttacher(listView, quickReturnTarget);
+    quickReturnAttacher = new QuickReturnAttacher(listView);
+
+    // Add a quick return targetView to the attacher.
+    // You can pass a position argument (POSITION_TOP or POSITION_BOTTOM).
+    quickReturnAttacher.addTargetView(textView, QuickReturnTargetView.POSITION_TOP);
 
     // If you need to add an OnScrollListener to the listView, this is the correct
     // way to do so.
