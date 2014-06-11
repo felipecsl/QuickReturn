@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
@@ -27,7 +28,6 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("");
@@ -37,10 +37,11 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
 
         actionBar.setListNavigationCallbacks(spinnerAdapter, this);
 
-        initialize();
+        initialize(R.layout.activity_main);
     }
 
-    private void initialize() {
+    private void initialize(final int layoutId) {
+        setContentView(layoutId);
         offset = 0;
         listView = (AbsListView) findViewById(R.id.listView);
         quickReturnTarget = (TextView) findViewById(R.id.quickReturnTarget);
@@ -48,7 +49,8 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
         adapter = new ArrayAdapter<>(this, R.layout.list_item);
         addMoreItems(100);
 
-        listView.setAdapter(new QuickReturnAdapter(adapter));
+        int numColumns = (listView instanceof GridView) ? 3 : 1;
+        listView.setAdapter(new QuickReturnAdapter(adapter, numColumns));
         quickReturnAttacher = new QuickReturnAttacher(listView, quickReturnTarget);
 
         // This is the correct way to register an OnScrollListener.
@@ -75,6 +77,8 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
         int id = item.getItemId();
         if (id == R.id.add_more) {
             addMoreItems(10);
+        } else if (id == R.id.add_a_lot_more) {
+            addMoreItems(100);
         } else if (id == R.id.reset) {
             reset();
         } else if (id == R.id.animated) {
@@ -121,13 +125,8 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
         if (itemPos == currentPos)
             return false;
 
-        if (itemPos == 0)
-            setContentView(R.layout.activity_main);
-        else
-            setContentView(R.layout.activity_main_grid);
-
         currentPos = itemPos;
-        initialize();
+        initialize(itemPos == 0 ? R.layout.activity_main : R.layout.activity_main_grid);
 
         return true;
     }

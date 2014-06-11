@@ -14,9 +14,15 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
     private final ListAdapter wrappedAdapter;
     private final int emptyMeasureSpec;
     private int[] itemsVerticalOffset;
+    private final int numColumns;
 
     public QuickReturnAdapter(final ListAdapter wrappedAdapter) {
+        this(wrappedAdapter, 1);
+    }
+
+    public QuickReturnAdapter(final ListAdapter wrappedAdapter, final int numColumns) {
         this.wrappedAdapter = wrappedAdapter;
+        this.numColumns = numColumns;
         emptyMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         itemsVerticalOffset = new int[wrappedAdapter.getCount()];
         wrappedAdapter.registerDataSetObserver(this);
@@ -65,9 +71,8 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
         final View v = wrappedAdapter.getView(position, convertView, parent);
-
-        int finalHeight;
         final int itemHeight = v.getHeight();
+        int finalHeight;
 
         if (itemHeight > 0) {
             finalHeight = itemHeight;
@@ -76,8 +81,8 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
             finalHeight = v.getMeasuredHeight();
         }
 
-        if (position + 1 < getCount())
-            itemsVerticalOffset[position + 1] = itemsVerticalOffset[position] + finalHeight;
+        if (position + numColumns < getCount())
+            itemsVerticalOffset[position + numColumns] = itemsVerticalOffset[position] + finalHeight;
 
         return v;
     }
