@@ -1,3 +1,7 @@
+# Version 1.2.4
+
+* Fixes quickreturn view jumping sometimes when scrolling the list
+
 # Version 1.2.3
 
 * Fixes messed up package names
