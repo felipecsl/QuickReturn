@@ -12,12 +12,24 @@
         android:layout_height="match_parent"/>
 
     <TextView
-        android:id="@+id/quickReturnTarget"
-        android:text="Quick return target"
+        android:id="@+id/quickReturnTopTarget"
+        android:text="Top target"
         android:gravity="center"
         android:textColor="#efefef"
         android:textSize="18sp"
         android:background="#cc0000"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+    <TextView
+        android:id="@+id/quickReturnBottomTarget"
+        android:text="Bottom target"
+        android:gravity="center"
+        android:textColor="#efefef"
+        android:textSize="18sp"
+        android:background="#0000cc"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
 

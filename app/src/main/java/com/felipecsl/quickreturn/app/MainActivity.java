@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
 import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
+import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 
 public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener, ActionBar.OnNavigationListener {
 
@@ -22,7 +24,10 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
     private ArrayAdapter<String> adapter;
     private int offset;
     private QuickReturnAttacher quickReturnAttacher;
-    private TextView quickReturnTarget;
+    private QuickReturnTargetView topTargetView;
+    private QuickReturnTargetView bottomTargetView;
+    private TextView topTextView;
+    private TextView bottomTextView;
     private int currentPos;
 
     @Override
@@ -44,14 +49,18 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
         setContentView(layoutId);
         offset = 0;
         listView = (AbsListView) findViewById(R.id.listView);
-        quickReturnTarget = (TextView) findViewById(R.id.quickReturnTarget);
+        topTextView = (TextView) findViewById(R.id.quickReturnTopTarget);
+        bottomTextView = (TextView) findViewById(R.id.quickReturnBottomTarget);
 
         adapter = new ArrayAdapter<>(this, R.layout.list_item);
         addMoreItems(100);
 
         int numColumns = (listView instanceof GridView) ? 3 : 1;
         listView.setAdapter(new QuickReturnAdapter(adapter, numColumns));
-        quickReturnAttacher = new QuickReturnAttacher(listView, quickReturnTarget);
+        quickReturnAttacher = new QuickReturnAttacher(listView);
+
+        topTargetView = quickReturnAttacher.addTargetView(topTextView, QuickReturnTargetView.POSITION_TOP);
+        bottomTargetView = quickReturnAttacher.addTargetView(bottomTextView, QuickReturnTargetView.POSITION_BOTTOM);
 
         // This is the correct way to register an OnScrollListener.
         // You have to add it on the QuickReturnAttacher, instead
@@ -82,25 +91,13 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
         } else if (id == R.id.reset) {
             reset();
         } else if (id == R.id.animated) {
-            quickReturnAttacher.setAnimatedTransition(!quickReturnAttacher.isAnimatedTransition());
-            item.setTitle(quickReturnAttacher.isAnimatedTransition() ? "Disable animated transition" : "Enable animated transition");
+            topTargetView.setAnimatedTransition(!topTargetView.isAnimatedTransition());
+            item.setTitle(topTargetView.isAnimatedTransition() ? "Disable animated transition" : "Enable animated transition");
             reset();
-        } else if (id == R.id.position) {
-            int newPos;
-            final FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) quickReturnTarget.getLayoutParams();
-            String newTitle;
-            if (quickReturnAttacher.getPosition() == QuickReturnAttacher.POSITION_TOP) {
-                newPos = QuickReturnAttacher.POSITION_BOTTOM;
-                layoutParams.gravity = Gravity.BOTTOM;
-                newTitle = "Move to top";
-            } else {
-                newPos = QuickReturnAttacher.POSITION_TOP;
-                layoutParams.gravity = Gravity.TOP;
-                newTitle = "Move to bottom";
-            }
-            item.setTitle(newTitle);
-            quickReturnTarget.setLayoutParams(layoutParams);
-            quickReturnAttacher = new QuickReturnAttacher(listView, quickReturnTarget, newPos);
+        } else if (id == R.id.bottom_view) {
+            bottomTextView.setVisibility(bottomTextView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+        } else if (id == R.id.top_view) {
+            topTextView.setVisibility(topTextView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
         }
         return true;
     }

@@ -28,8 +28,14 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/position"
-        android:title="Move to bottom"
+        android:id="@+id/top_view"
+        android:title="Toggle top QuickReturn"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/bottom_view"
+        android:title="Toggle bottom QuickReturn"
         android:orderInCategory="100"
         app:showAsAction="never"/>
 </menu>

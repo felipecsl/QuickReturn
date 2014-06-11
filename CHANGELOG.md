@@ -1,3 +1,9 @@
+# Version 1.3.0
+
+* ``QuickReturnAttacher`` API has changed. You can now assign multiple QuickReturn targets using ``QuickReturnAttacher.addTargetView()``.
+* Fixes weird transition when using a GridView.
+* Minor performance optimizations.
+
 # Version 1.2.4
 
 * Fixes quickreturn view jumping sometimes when scrolling the list

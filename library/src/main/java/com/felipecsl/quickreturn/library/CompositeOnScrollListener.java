@@ -12,6 +12,10 @@ public class CompositeOnScrollListener
         add(listener);
     }
 
+    public void unregisterOnScrollListener(final AbsListView.OnScrollListener listener) {
+        remove(listener);
+    }
+
     @Override
     public void onScrollStateChanged(final AbsListView view, final int scrollState) {
         for (AbsListView.OnScrollListener listener : this)
