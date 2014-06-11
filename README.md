@@ -69,12 +69,18 @@ Check the [sample app](https://github.com/felipecsl/QuickReturn/blob/master/app/
 * Animated transitions via ``QuickReturnAttacher.setAnimatedTransition(true)``
 * Supports bottom (footer) quick return position via ``QuickReturnAttacher.setPosition(QuickReturnListView.POSITION_BOTTOM).``
 * You can use it with any subclass of ``AbsListView``, including ``ListView`` and ``GridView``.
+* If you're using a ``GridView``, you have to tell ``QuickReturnAdapter`` how many columns it has, via its constructor:
+
+```java
+public QuickReturnAdapter(final ListAdapter wrappedAdapter, final int numColumns)
+```
+
 
 Works with API Level 10 and above.
 
-### Caveats
+### Known issues/Caveats
 
-* None yet.
+* The Animated Transition will sometimes hide/show randomly when scrolling down very slowly.
 
 ### Changelog
 
