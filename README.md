@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     // ...
-    compile 'com.felipecsl:quickreturn:1.2.+'
+    compile 'com.felipecsl:quickreturn:1.3.+'
 }
 ```
 
