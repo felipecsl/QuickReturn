@@ -3,6 +3,7 @@ package com.felipecsl.quickreturn.library.widget;
 import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListAdapter;
 
 import java.util.ArrayList;
@@ -11,10 +12,12 @@ import java.util.List;
 
 public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
 
+    private static final int VIEW_TYPE_PLACEHOLDER = 1;
     private final ListAdapter wrappedAdapter;
     private final int emptyMeasureSpec;
     private int[] itemsVerticalOffset;
     private final int numColumns;
+    private int targetViewHeight;
 
     public QuickReturnAdapter(final ListAdapter wrappedAdapter) {
         this(wrappedAdapter, 1);
@@ -24,7 +27,7 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
         this.wrappedAdapter = wrappedAdapter;
         this.numColumns = numColumns;
         emptyMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        itemsVerticalOffset = new int[wrappedAdapter.getCount()];
+        itemsVerticalOffset = new int[wrappedAdapter.getCount() + numColumns];
         wrappedAdapter.registerDataSetObserver(this);
     }
 
@@ -50,7 +53,7 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
 
     @Override
     public int getCount() {
-        return wrappedAdapter.getCount();
+        return wrappedAdapter.getCount() + numColumns;
     }
 
     @Override
@@ -70,18 +73,31 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
 
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
-        final View v = wrappedAdapter.getView(position, convertView, parent);
-        final int itemHeight = v.getHeight();
+        View v;
         int finalHeight;
+        if (position < numColumns) {
+            if (convertView == null)
+                v = new View(parent.getContext());
+            else
+                v = convertView;
+            v.setLayoutParams(new AbsListView.LayoutParams(
+                    AbsListView.LayoutParams.MATCH_PARENT,
+                    targetViewHeight));
 
-        if (itemHeight > 0) {
-            finalHeight = itemHeight;
+            finalHeight = targetViewHeight;
         } else {
-            v.measure(emptyMeasureSpec, emptyMeasureSpec);
-            finalHeight = v.getMeasuredHeight();
+            v = wrappedAdapter.getView(position - numColumns, convertView, parent);
+            final int itemHeight = v.getHeight();
+
+            if (itemHeight > 0) {
+                finalHeight = itemHeight;
+            } else {
+                v.measure(emptyMeasureSpec, emptyMeasureSpec);
+                finalHeight = v.getMeasuredHeight();
+            }
         }
 
-        if (position + numColumns < getCount())
+        if (position + numColumns < itemsVerticalOffset.length)
             itemsVerticalOffset[position + numColumns] = itemsVerticalOffset[position] + finalHeight;
 
         return v;
@@ -89,12 +105,14 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
 
     @Override
     public int getItemViewType(final int position) {
+        if (position < numColumns)
+            return VIEW_TYPE_PLACEHOLDER;
         return wrappedAdapter.getItemViewType(position);
     }
 
     @Override
     public int getViewTypeCount() {
-        return wrappedAdapter.getViewTypeCount();
+        return wrappedAdapter.getViewTypeCount() + numColumns;
     }
 
     @Override
@@ -125,8 +143,12 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
         if (wrappedAdapter.getCount() < itemsVerticalOffset.length)
             return;
 
-        int[] newArray = new int[wrappedAdapter.getCount()];
+        int[] newArray = new int[wrappedAdapter.getCount() + numColumns];
         System.arraycopy(itemsVerticalOffset, 0, newArray, 0, Math.min(itemsVerticalOffset.length, newArray.length));
         itemsVerticalOffset = newArray;
+    }
+
+    public void setTargetViewHeight(final int targetViewHeight) {
+        this.targetViewHeight = targetViewHeight;
     }
 }

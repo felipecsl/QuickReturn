@@ -53,7 +53,9 @@ protected void onCreate(Bundle savedInstanceState) {
 
     // Add a quick return targetView to the attacher.
     // You can pass a position argument (POSITION_TOP or POSITION_BOTTOM).
-    quickReturnAttacher.addTargetView(textView, QuickReturnTargetView.POSITION_TOP);
+    // You can also optionally pass the size of the target view, which will be used to 
+    // offset the list height, preventing it from hiding content behind the target view.
+    quickReturnAttacher.addTargetView(textView, QuickReturnTargetView.POSITION_TOP, 50);
 
     // If you need to add an OnScrollListener to the listView, this is the correct
     // way to do so.
@@ -73,6 +75,7 @@ Check the [sample app](https://github.com/felipecsl/QuickReturn/blob/master/app/
 * Supports bottom (footer) quick return position via ``QuickReturnAttacher.setPosition(QuickReturnListView.POSITION_BOTTOM).``
 * You can use it with any subclass of ``AbsListView``, including ``ListView`` and ``GridView``.
 * If you're using a ``GridView``, you have to tell ``QuickReturnAdapter`` how many columns it has, via its constructor:
+* Automatically adjusts the ListView/GridView to prevent it from being hidden behind the target view, when it is placed at the top of the list.
 
 ```java
 public QuickReturnAdapter(final ListAdapter wrappedAdapter, final int numColumns)

@@ -37,9 +37,20 @@ public class QuickReturnTargetView implements AbsListView.OnScrollListener {
     private final AbsListView listView;
 
     public QuickReturnTargetView(final AbsListView listView, final View targetView, final int position) {
+        this (listView, targetView, position, 0);
+    }
+
+    public QuickReturnTargetView(final AbsListView listView, final View targetView, final int position, final int targetViewHeight) {
         this.listView = listView;
         quickReturnView = targetView;
         setPosition(position);
+        final QuickReturnAdapter adapter = getAdapter();
+
+        if (adapter == null)
+            throw new UnsupportedOperationException("You need to set the listView adapter before adding a targetView");
+
+        if (position == POSITION_TOP)
+            adapter.setTargetViewHeight(targetViewHeight);
     }
 
     /**

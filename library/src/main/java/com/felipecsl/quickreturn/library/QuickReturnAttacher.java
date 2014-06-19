@@ -18,7 +18,11 @@ public class QuickReturnAttacher {
     }
 
     public QuickReturnTargetView addTargetView(final View view, final int position) {
-        final QuickReturnTargetView targetView = new QuickReturnTargetView(listView, view, position);
+        return addTargetView(view, position, 0);
+    }
+
+    public QuickReturnTargetView addTargetView(final View view, final int position, final int viewHeight) {
+        final QuickReturnTargetView targetView = new QuickReturnTargetView(listView, view, position, viewHeight);
         onScrollListener.registerOnScrollListener(targetView);
         return targetView;
     }

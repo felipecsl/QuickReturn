@@ -1,15 +1,14 @@
 package com.felipecsl.quickreturn.app;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -20,12 +19,9 @@ import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 
 public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener, ActionBar.OnNavigationListener {
 
-    private AbsListView listView;
     private ArrayAdapter<String> adapter;
     private int offset;
-    private QuickReturnAttacher quickReturnAttacher;
     private QuickReturnTargetView topTargetView;
-    private QuickReturnTargetView bottomTargetView;
     private TextView topTextView;
     private TextView bottomTextView;
     private int currentPos;
@@ -48,7 +44,7 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
     private void initialize(final int layoutId) {
         setContentView(layoutId);
         offset = 0;
-        listView = (AbsListView) findViewById(R.id.listView);
+        final AbsListView listView = (AbsListView) findViewById(R.id.listView);
         topTextView = (TextView) findViewById(R.id.quickReturnTopTarget);
         bottomTextView = (TextView) findViewById(R.id.quickReturnBottomTarget);
 
@@ -57,15 +53,21 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
 
         int numColumns = (listView instanceof GridView) ? 3 : 1;
         listView.setAdapter(new QuickReturnAdapter(adapter, numColumns));
-        quickReturnAttacher = new QuickReturnAttacher(listView);
+        final QuickReturnAttacher quickReturnAttacher = new QuickReturnAttacher(listView);
 
-        topTargetView = quickReturnAttacher.addTargetView(topTextView, QuickReturnTargetView.POSITION_TOP);
-        bottomTargetView = quickReturnAttacher.addTargetView(bottomTextView, QuickReturnTargetView.POSITION_BOTTOM);
+        topTargetView = quickReturnAttacher.addTargetView(topTextView, QuickReturnTargetView.POSITION_TOP, dpToPx(this, 50));
+        quickReturnAttacher.addTargetView(bottomTextView, QuickReturnTargetView.POSITION_BOTTOM);
 
         // This is the correct way to register an OnScrollListener.
         // You have to add it on the QuickReturnAttacher, instead
         // of on the listView directly.
         quickReturnAttacher.addOnScrollListener(this);
+    }
+
+    public static int dpToPx(final Context context, final float dp) {
+        // Took from http://stackoverflow.com/questions/8309354/formula-px-to-dp-dp-to-px-android
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) ((dp * scale) + 0.5f);
     }
 
     private void addMoreItems(final int amount) {
