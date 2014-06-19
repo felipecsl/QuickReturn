@@ -1,3 +1,7 @@
+# Version 1.3.1
+
+* Prevents overlap of listView elements with targetView: Automatically adjusts the ListView/GridView to prevent it from being hidden behind the target view, when it is placed at the top of the list.\
+
 # Version 1.3.0
 
 * ``QuickReturnAttacher`` API has changed. You can now assign multiple QuickReturn targets using ``QuickReturnAttacher.addTargetView()``.
