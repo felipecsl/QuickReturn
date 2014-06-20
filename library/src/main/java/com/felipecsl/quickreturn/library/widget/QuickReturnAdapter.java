@@ -12,7 +12,6 @@ import java.util.List;
 
 public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
 
-    private static final int VIEW_TYPE_PLACEHOLDER = 1;
     private final ListAdapter wrappedAdapter;
     private final int emptyMeasureSpec;
     private int[] itemsVerticalOffset;
@@ -106,13 +105,13 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
     @Override
     public int getItemViewType(final int position) {
         if (position < numColumns)
-            return VIEW_TYPE_PLACEHOLDER;
+            return wrappedAdapter.getViewTypeCount();
         return wrappedAdapter.getItemViewType(position);
     }
 
     @Override
     public int getViewTypeCount() {
-        return wrappedAdapter.getViewTypeCount() + numColumns;
+        return wrappedAdapter.getViewTypeCount() + 1;
     }
 
     @Override

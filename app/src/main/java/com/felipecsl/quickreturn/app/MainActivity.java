@@ -8,16 +8,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
 import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 
-public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener, ActionBar.OnNavigationListener {
+public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener, ActionBar.OnNavigationListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ArrayAdapter<String> adapter;
     private int offset;
@@ -62,6 +64,8 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
         // You have to add it on the QuickReturnAttacher, instead
         // of on the listView directly.
         quickReturnAttacher.addOnScrollListener(this);
+
+        listView.setOnItemClickListener(this);
     }
 
     public static int dpToPx(final Context context, final float dp) {
@@ -128,5 +132,15 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
         initialize(itemPos == 0 ? R.layout.activity_main : R.layout.activity_main_grid);
 
         return true;
+    }
+
+    @Override
+    public void onClick(final View v) {
+
+    }
+
+    @Override
+    public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+        Toast.makeText(this, "Item " + position + " clicked", Toast.LENGTH_SHORT).show();
     }
 }
