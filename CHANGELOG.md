@@ -1,3 +1,7 @@
+# Version 1.3.2
+
+* Fixes bug with incorrectly calculated ``QuickReturnAdapter.getViewTypeCount()``
+
 # Version 1.3.1
 
 * Prevents overlap of listView elements with targetView: Automatically adjusts the ListView/GridView to prevent it from being hidden behind the target view, when it is placed at the top of the list.\
