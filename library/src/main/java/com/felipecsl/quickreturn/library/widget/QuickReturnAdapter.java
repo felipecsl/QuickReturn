@@ -17,6 +17,7 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
     private int[] itemsVerticalOffset;
     private final int numColumns;
     private int targetViewHeight;
+    private int verticalSpacing;
 
     public QuickReturnAdapter(final ListAdapter wrappedAdapter) {
         this(wrappedAdapter, 1);
@@ -97,7 +98,7 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
         }
 
         if (position + numColumns < itemsVerticalOffset.length)
-            itemsVerticalOffset[position + numColumns] = itemsVerticalOffset[position] + finalHeight;
+            itemsVerticalOffset[position + numColumns] = itemsVerticalOffset[position] + finalHeight + verticalSpacing;
 
         return v;
     }
@@ -149,5 +150,9 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
 
     public void setTargetViewHeight(final int targetViewHeight) {
         this.targetViewHeight = targetViewHeight;
+    }
+
+    public void setVerticalSpacing(final int verticalSpacing) {
+        this.verticalSpacing = verticalSpacing;
     }
 }

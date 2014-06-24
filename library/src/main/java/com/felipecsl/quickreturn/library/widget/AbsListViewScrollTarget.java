@@ -1,9 +1,15 @@
 package com.felipecsl.quickreturn.library.widget;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.WrapperListAdapter;
+
+import com.felipecsl.quickreturn.BuildConfig;
 
 public class AbsListViewScrollTarget
         extends QuickReturnTargetView
@@ -15,6 +21,7 @@ public class AbsListViewScrollTarget
         this(listView, targetView, position, 0);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public AbsListViewScrollTarget(final AbsListView listView, final View targetView, final int position, final int targetViewHeight) {
         super(targetView, position);
 
@@ -26,6 +33,11 @@ public class AbsListViewScrollTarget
 
         if (position == POSITION_TOP)
             adapter.setTargetViewHeight(targetViewHeight);
+
+        if (listView instanceof ListView)
+            adapter.setVerticalSpacing(((ListView) listView).getDividerHeight());
+        else if (listView instanceof GridView && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+            adapter.setVerticalSpacing(((GridView) listView).getVerticalSpacing());
     }
 
     @Override

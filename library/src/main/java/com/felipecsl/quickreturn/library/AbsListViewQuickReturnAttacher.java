@@ -7,7 +7,7 @@ import com.felipecsl.quickreturn.library.widget.AbsListViewScrollTarget;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 
 public class AbsListViewQuickReturnAttacher extends QuickReturnAttacher {
-    private static final String TAG = "QuickReturnAttacher";
+    private static final String TAG = "AbsListViewQuickReturnAttacher";
 
     private final CompositeAbsListViewOnScrollListener onScrollListener = new CompositeAbsListViewOnScrollListener();
     private final AbsListView absListView;
