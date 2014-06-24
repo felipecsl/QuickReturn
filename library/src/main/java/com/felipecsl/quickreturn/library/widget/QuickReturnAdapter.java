@@ -88,14 +88,9 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
             finalHeight = targetViewHeight;
         } else {
             v = wrappedAdapter.getView(position - numColumns, convertView, parent);
-            final int itemHeight = v.getHeight();
 
-            if (itemHeight > 0) {
-                finalHeight = itemHeight;
-            } else {
-                v.measure(View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.AT_MOST), heightMeasureSpec);
-                finalHeight = v.getMeasuredHeight();
-            }
+            v.measure(View.MeasureSpec.makeMeasureSpec(parent.getWidth() / numColumns, View.MeasureSpec.AT_MOST), heightMeasureSpec);
+            finalHeight = v.getMeasuredHeight();
         }
 
         if (position + numColumns < itemsVerticalOffset.length)
