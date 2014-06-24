@@ -49,7 +49,7 @@ protected void onCreate(Bundle savedInstanceState) {
     quickReturnListView.setAdapter(new QuickReturnAdapter(adapter));
 
     // Attach a QuickReturnAttacher, which takes care of all of the hide/show functionality.
-    quickReturnAttacher = QuickReturnAttacher.fromView(listView);
+    quickReturnAttacher = QuickReturnAttacher.forView(listView);
 
     // Add a quick return targetView to the attacher.
     // You can pass a position argument (POSITION_TOP or POSITION_BOTTOM).
