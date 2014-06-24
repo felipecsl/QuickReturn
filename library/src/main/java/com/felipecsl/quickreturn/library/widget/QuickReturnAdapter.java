@@ -12,8 +12,9 @@ import java.util.List;
 
 public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
 
+    private static final String TAG = "QuickReturnAdapter";
     private final ListAdapter wrappedAdapter;
-    private final int emptyMeasureSpec;
+    private final int heightMeasureSpec;
     private int[] itemsVerticalOffset;
     private final int numColumns;
     private int targetViewHeight;
@@ -26,7 +27,7 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
     public QuickReturnAdapter(final ListAdapter wrappedAdapter, final int numColumns) {
         this.wrappedAdapter = wrappedAdapter;
         this.numColumns = numColumns;
-        emptyMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         itemsVerticalOffset = new int[wrappedAdapter.getCount() + numColumns];
         wrappedAdapter.registerDataSetObserver(this);
     }
@@ -92,7 +93,7 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
             if (itemHeight > 0) {
                 finalHeight = itemHeight;
             } else {
-                v.measure(emptyMeasureSpec, emptyMeasureSpec);
+                v.measure(View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.AT_MOST), heightMeasureSpec);
                 finalHeight = v.getMeasuredHeight();
             }
         }
