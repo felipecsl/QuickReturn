@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
     // ...
-    compile 'com.felipecsl:quickreturn:1.3.+'
+    compile 'com.felipecsl:quickreturn:1.4.+'
 }
 ```
 
@@ -49,7 +49,7 @@ protected void onCreate(Bundle savedInstanceState) {
     quickReturnListView.setAdapter(new QuickReturnAdapter(adapter));
 
     // Attach a QuickReturnAttacher, which takes care of all of the hide/show functionality.
-    quickReturnAttacher = new QuickReturnAttacher(listView);
+    quickReturnAttacher = QuickReturnAttacher.fromView(listView);
 
     // Add a quick return targetView to the attacher.
     // You can pass a position argument (POSITION_TOP or POSITION_BOTTOM).

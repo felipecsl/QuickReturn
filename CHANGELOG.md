@@ -4,6 +4,7 @@
 * Implemented preliminar support for ``ScrollView``. ``ObservableScrollView`` should be used.
 * Fixed jumping quick return view when listView had a positive divider height.
 * Fixed incorrect position for ``AdapterView.OnItemClickListener`` ``onItemClick()`` callback.
+* Fixed jump on scroll issue.
 
 # Version 1.3.2
 
