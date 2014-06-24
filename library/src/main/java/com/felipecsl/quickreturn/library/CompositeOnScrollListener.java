@@ -1,30 +1,24 @@
 package com.felipecsl.quickreturn.library;
 
-import android.widget.AbsListView;
+import com.felipecsl.quickreturn.library.widget.ObservableScrollView;
 
 import java.util.ArrayList;
 
 public class CompositeOnScrollListener
-        extends ArrayList<AbsListView.OnScrollListener>
-        implements AbsListView.OnScrollListener {
+        extends ArrayList<ObservableScrollView.OnScrollListener>
+        implements ObservableScrollView.OnScrollListener {
 
-    public void registerOnScrollListener(final AbsListView.OnScrollListener listener) {
+    public void registerOnScrollListener(final ObservableScrollView.OnScrollListener listener) {
         add(listener);
     }
 
-    public void unregisterOnScrollListener(final AbsListView.OnScrollListener listener) {
+    public void unregisterOnScrollListener(final ObservableScrollView.OnScrollListener listener) {
         remove(listener);
     }
 
     @Override
-    public void onScrollStateChanged(final AbsListView view, final int scrollState) {
-        for (AbsListView.OnScrollListener listener : this)
-            listener.onScrollStateChanged(view, scrollState);
-    }
-
-    @Override
-    public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
-        for (AbsListView.OnScrollListener listener : this)
-            listener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+    public void onScrollChanged(final int scrollY) {
+        for (ObservableScrollView.OnScrollListener listener : this)
+            listener.onScrollChanged(scrollY);
     }
 }

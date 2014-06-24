@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,11 +16,15 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
+import com.felipecsl.quickreturn.library.widget.AbsListViewScrollTarget;
 import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 
-public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener, ActionBar.OnNavigationListener, View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivity
+        extends ActionBarActivity
+        implements AbsListView.OnScrollListener, ActionBar.OnNavigationListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ArrayAdapter<String> adapter;
     private int offset;
@@ -35,7 +40,7 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("");
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        final String[] actionBarItems = {"QuickReturn w/ ListView", "QuickReturn w/ GridView"};
+        final String[] actionBarItems = {"ListView", "GridView", "ScrollView"};
         final SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this, R.layout.action_bar_spinner_text, actionBarItems);
 
         actionBar.setListNavigationCallbacks(spinnerAdapter, this);
@@ -46,26 +51,30 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
     private void initialize(final int layoutId) {
         setContentView(layoutId);
         offset = 0;
-        final AbsListView listView = (AbsListView) findViewById(R.id.listView);
+        final ViewGroup viewGroup = (ViewGroup) findViewById(R.id.listView);
         topTextView = (TextView) findViewById(R.id.quickReturnTopTarget);
         bottomTextView = (TextView) findViewById(R.id.quickReturnBottomTarget);
 
         adapter = new ArrayAdapter<>(this, R.layout.list_item);
         addMoreItems(100);
 
-        int numColumns = (listView instanceof GridView) ? 3 : 1;
-        listView.setAdapter(new QuickReturnAdapter(adapter, numColumns));
-        final QuickReturnAttacher quickReturnAttacher = new QuickReturnAttacher(listView);
+        if (viewGroup instanceof AbsListView) {
+            int numColumns = (viewGroup instanceof GridView) ? 3 : 1;
+            final AbsListView absListView = (AbsListView) viewGroup;
+            absListView.setAdapter(new QuickReturnAdapter(adapter, numColumns));
+            ((AbsListView) viewGroup).setOnItemClickListener(this);
+        }
 
-        topTargetView = quickReturnAttacher.addTargetView(topTextView, QuickReturnTargetView.POSITION_TOP, dpToPx(this, 50));
-        quickReturnAttacher.addTargetView(bottomTextView, QuickReturnTargetView.POSITION_BOTTOM);
+        final QuickReturnAttacher quickReturnAttacher = QuickReturnAttacher.forView(viewGroup);
+        quickReturnAttacher.addTargetView(bottomTextView, AbsListViewScrollTarget.POSITION_BOTTOM);
+        topTargetView = quickReturnAttacher.addTargetView(topTextView, AbsListViewScrollTarget.POSITION_TOP, dpToPx(this, 50));
 
-        // This is the correct way to register an OnScrollListener.
-        // You have to add it on the QuickReturnAttacher, instead
-        // of on the listView directly.
-        quickReturnAttacher.addOnScrollListener(this);
-
-        listView.setOnItemClickListener(this);
+        if (quickReturnAttacher instanceof AbsListViewQuickReturnAttacher) {
+            // This is the correct way to register an OnScrollListener.
+            // You have to add it on the QuickReturnAttacher, instead
+            // of on the viewGroup directly.
+            ((AbsListViewQuickReturnAttacher) quickReturnAttacher).addOnScrollListener(this);
+        }
     }
 
     public static int dpToPx(final Context context, final float dp) {
@@ -129,7 +138,18 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
             return false;
 
         currentPos = itemPos;
-        initialize(itemPos == 0 ? R.layout.activity_main : R.layout.activity_main_grid);
+        switch (itemPos) {
+            case 0:
+                currentPos = R.layout.activity_main;
+                break;
+            case 1:
+                currentPos = R.layout.activity_main_grid;
+                break;
+            case 2:
+                currentPos = R.layout.activity_main_scrollview;
+                break;
+        }
+        initialize(currentPos);
 
         return true;
     }

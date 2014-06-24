@@ -6,51 +6,38 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.AbsListView;
-import android.widget.ListAdapter;
-import android.widget.WrapperListAdapter;
 
 import com.felipecsl.quickreturn.library.QuickReturnStateTransition;
 import com.felipecsl.quickreturn.library.SimpleAnimationListener;
 
-public class QuickReturnTargetView implements AbsListView.OnScrollListener {
-    private static final String TAG = "QuickReturnTargetView";
+public abstract class QuickReturnTargetView {
 
-    private static final int STATE_ONSCREEN = 0;
-    private static final int STATE_OFFSCREEN = 1;
-    private static final int STATE_RETURNING = 2;
-    private static final int STATE_EXPANDED = 3;
+    protected static final String TAG = "QuickReturnTargetView";
+
+    protected static final int STATE_ONSCREEN = 0;
+    protected static final int STATE_OFFSCREEN = 1;
+    protected static final int STATE_RETURNING = 2;
+    protected static final int STATE_EXPANDED = 3;
 
     public static final int POSITION_TOP = 0;
     public static final int POSITION_BOTTOM = 1;
 
-    private int currentState = STATE_ONSCREEN;
-    private int minRawY;
-    private View quickReturnView;
-    private boolean noAnimation;
+    protected int currentState = STATE_ONSCREEN;
+    protected int minRawY;
+    protected View quickReturnView;
+    protected boolean noAnimation;
 
-    private final SimpleQuickReturnStateTransition defaultTransition = new SimpleQuickReturnStateTransition();
-    private final AnimatedQuickReturnStateTransition animatedTransition = new AnimatedQuickReturnStateTransition();
-    private final BottomQuickReturnStateTransition bottomTransition = new BottomQuickReturnStateTransition();
+    protected final SimpleQuickReturnStateTransition defaultTransition = new SimpleQuickReturnStateTransition();
+    protected final AnimatedQuickReturnStateTransition animatedTransition = new AnimatedQuickReturnStateTransition();
+    protected final BottomQuickReturnStateTransition bottomTransition = new BottomQuickReturnStateTransition();
 
-    private QuickReturnStateTransition currentTransition;
-    private final AbsListView listView;
+    protected QuickReturnStateTransition currentTransition;
 
-    public QuickReturnTargetView(final AbsListView listView, final View targetView, final int position) {
-        this (listView, targetView, position, 0);
-    }
+    protected abstract int getComputedScrollY();
 
-    public QuickReturnTargetView(final AbsListView listView, final View targetView, final int position, final int targetViewHeight) {
-        this.listView = listView;
+    public QuickReturnTargetView(final View targetView, final int position) {
         quickReturnView = targetView;
         setPosition(position);
-        final QuickReturnAdapter adapter = getAdapter();
-
-        if (adapter == null)
-            throw new UnsupportedOperationException("You need to set the listView adapter before adding a targetView");
-
-        if (position == POSITION_TOP)
-            adapter.setTargetViewHeight(targetViewHeight);
     }
 
     /**
@@ -77,27 +64,6 @@ public class QuickReturnTargetView implements AbsListView.OnScrollListener {
                 : bottomTransition;
     }
 
-    public int getComputedScrollY() {
-        if (listView.getChildCount() == 0 || listView.getAdapter() == null)
-            return 0;
-
-        int pos = listView.getFirstVisiblePosition();
-        final View view = listView.getChildAt(0);
-        return getAdapter().getPositionVerticalOffset(pos) - view.getTop();
-    }
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void translateTo(final int translationY) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) {
-            final TranslateAnimation anim = new TranslateAnimation(0, 0, translationY, translationY);
-            anim.setFillAfter(true);
-            anim.setDuration(0);
-            quickReturnView.startAnimation(anim);
-        } else {
-            quickReturnView.setTranslationY(translationY);
-        }
-    }
-
     public boolean isAnimatedTransition() {
         return currentTransition.equals(animatedTransition);
     }
@@ -112,36 +78,16 @@ public class QuickReturnTargetView implements AbsListView.OnScrollListener {
         minRawY = 0;
     }
 
-    private QuickReturnAdapter getAdapter() {
-        ListAdapter adapter = listView.getAdapter();
-
-        if (adapter instanceof WrapperListAdapter)
-            adapter = ((WrapperListAdapter) adapter).getWrappedAdapter();
-
-        if (!(adapter instanceof QuickReturnAdapter))
-            throw new UnsupportedOperationException("Your QuickReturn ListView adapter must be an instance of QuickReturnAdapter.");
-
-        return (QuickReturnAdapter) adapter;
-    }
-
-    @Override
-    public void onScrollStateChanged(final AbsListView view, final int scrollState) {
-    }
-
-    @Override
-    public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
-        if (listView.getAdapter() == null || quickReturnView == null)
-            return;
-
-        final int maxVerticalOffset = getAdapter().getMaxVerticalOffset();
-        final int listViewHeight = listView.getHeight();
-        final int rawY = -Math.min(maxVerticalOffset > listViewHeight
-                ? maxVerticalOffset - listViewHeight
-                : listViewHeight, getComputedScrollY());
-
-        final int translationY = currentTransition.determineState(rawY, quickReturnView.getHeight());
-
-        translateTo(translationY);
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    protected void translateTo(final int translationY) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) {
+            final TranslateAnimation anim = new TranslateAnimation(0, 0, translationY, translationY);
+            anim.setFillAfter(true);
+            anim.setDuration(0);
+            quickReturnView.startAnimation(anim);
+        } else {
+            quickReturnView.setTranslationY(translationY);
+        }
     }
 
     class SimpleQuickReturnStateTransition implements QuickReturnStateTransition {

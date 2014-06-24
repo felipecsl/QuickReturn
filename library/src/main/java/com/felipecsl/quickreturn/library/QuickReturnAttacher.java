@@ -1,37 +1,25 @@
 package com.felipecsl.quickreturn.library;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ScrollView;
 
+import com.felipecsl.quickreturn.library.widget.ObservableScrollView;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 
-public class QuickReturnAttacher {
+public abstract class QuickReturnAttacher {
 
-    private static final String TAG = "QuickReturnAttacher";
+    public static QuickReturnAttacher forView(ViewGroup viewGroup) {
+        if (viewGroup instanceof AbsListView)
+            return new AbsListViewQuickReturnAttacher((AbsListView) viewGroup);
+        else if (viewGroup instanceof ScrollView)
+            return new ScrollViewQuickReturnAttacher((ObservableScrollView) viewGroup);
 
-    private final CompositeOnScrollListener onScrollListener = new CompositeOnScrollListener();
-    private final AbsListView listView;
-
-    public QuickReturnAttacher(final AbsListView listView) {
-        this.listView = listView;
-        listView.setOnScrollListener(onScrollListener);
+        throw new UnsupportedOperationException("Invalid viewGroup instance. It must be a subclass of AbsListView or ObservableScrollView");
     }
 
-    public QuickReturnTargetView addTargetView(final View view, final int position) {
-        return addTargetView(view, position, 0);
-    }
+    public abstract QuickReturnTargetView addTargetView(final View view, final int position);
 
-    public QuickReturnTargetView addTargetView(final View view, final int position, final int viewHeight) {
-        final QuickReturnTargetView targetView = new QuickReturnTargetView(listView, view, position, viewHeight);
-        onScrollListener.registerOnScrollListener(targetView);
-        return targetView;
-    }
-
-    public void removeTargetView(final QuickReturnTargetView targetView) {
-        onScrollListener.unregisterOnScrollListener(targetView);
-    }
-
-    public void addOnScrollListener(final AbsListView.OnScrollListener listener) {
-        onScrollListener.registerOnScrollListener(listener);
-    }
+    public abstract QuickReturnTargetView addTargetView(final View view, final int position, final int viewHeight);
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.felipecsl.quickreturn.library.widget.ObservableScrollView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View style="@style/Item.Top"/>
+
+                <View
+                    android:id="@+id/placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/sticky_height"/>
+
+                <View style="@style/Item.Bottom"/>
+
+                <View style="@style/Item.Bottom.Alt"/>
+
+                <View style="@style/Item.Bottom"/>
+
+                <View style="@style/Item.Bottom.Alt"/>
+
+                <View style="@style/Item.Bottom"/>
+
+                <View style="@style/Item.Bottom.Alt"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/sticky"
+                style="@style/Item.Sticky"/>
+
+        </FrameLayout>
+
+    </com.felipecsl.quickreturn.library.widget.ObservableScrollView>
+
+    <TextView
+        android:id="@+id/quickReturnTopTarget"
+        android:text="Top target"
+        android:gravity="center"
+        android:textColor="#efefef"
+        android:textSize="18sp"
+        android:background="#cc0000"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+    <TextView
+        android:id="@+id/quickReturnBottomTarget"
+        android:text="Bottom target"
+        android:gravity="center"
+        android:textColor="#efefef"
+        android:textSize="18sp"
+        android:background="#0000cc"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+</FrameLayout>
