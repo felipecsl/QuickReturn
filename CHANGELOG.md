@@ -1,3 +1,10 @@
+# Version 1.4.0
+
+* Changed QuickReturnAttacher interface. ``QuickReturnAttacher.forView()`` should be used now.
+* Implemented preliminar support for ``ScrollView``. ``ObservableScrollView`` should be used.
+* Fixed jumping quick return view when listView had a positive divider height.
+* Fixed incorrect position for ``AdapterView.OnItemClickListener`` ``onItemClick()`` callback.
+
 # Version 1.3.2
 
 * Fixes bug with incorrectly calculated ``QuickReturnAdapter.getViewTypeCount()``

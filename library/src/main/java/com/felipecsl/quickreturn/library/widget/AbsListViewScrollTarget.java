@@ -9,8 +9,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.WrapperListAdapter;
 
-import com.felipecsl.quickreturn.BuildConfig;
-
 public class AbsListViewScrollTarget
         extends QuickReturnTargetView
         implements AbsListView.OnScrollListener {

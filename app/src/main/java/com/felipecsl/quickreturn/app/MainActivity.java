@@ -62,7 +62,6 @@ public class MainActivity
             int numColumns = (viewGroup instanceof GridView) ? 3 : 1;
             final AbsListView absListView = (AbsListView) viewGroup;
             absListView.setAdapter(new QuickReturnAdapter(adapter, numColumns));
-            ((AbsListView) viewGroup).setOnItemClickListener(this);
         }
 
         final QuickReturnAttacher quickReturnAttacher = QuickReturnAttacher.forView(viewGroup);
@@ -73,7 +72,9 @@ public class MainActivity
             // This is the correct way to register an OnScrollListener.
             // You have to add it on the QuickReturnAttacher, instead
             // of on the viewGroup directly.
-            ((AbsListViewQuickReturnAttacher) quickReturnAttacher).addOnScrollListener(this);
+            final AbsListViewQuickReturnAttacher attacher = (AbsListViewQuickReturnAttacher) quickReturnAttacher;
+            attacher.addOnScrollListener(this);
+            attacher.setOnItemClickListener(this);
         }
     }
 
