@@ -76,6 +76,7 @@ Check the [sample app](https://github.com/felipecsl/QuickReturn/blob/master/app/
 * You can use it with any subclass of ``AbsListView``, including ``ListView`` and ``GridView``.
 * If you're using a ``GridView``, you have to tell ``QuickReturnAdapter`` how many columns it has, via its constructor:
 * Automatically adjusts the ListView/GridView to prevent it from being hidden behind the target view, when it is placed at the top of the list.
+* Supports ScrollView as well!
 
 ```java
 public QuickReturnAdapter(final ListAdapter wrappedAdapter, final int numColumns)
