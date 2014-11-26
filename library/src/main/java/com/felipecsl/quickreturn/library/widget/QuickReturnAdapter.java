@@ -151,4 +151,8 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
     public void setVerticalSpacing(final int verticalSpacing) {
         this.verticalSpacing = verticalSpacing;
     }
+
+    public int getNumColumns() {
+        return numColumns;
+    }
 }
