@@ -1,13 +1,17 @@
 package com.felipecsl.quickreturn.library;
 
+import android.net.Uri.Builder;
+import android.os.Build;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Adapter;
 
 import com.felipecsl.quickreturn.library.widget.AbsListViewScrollTarget;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
+import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 
 public class AbsListViewQuickReturnAttacher
         extends QuickReturnAttacher
@@ -55,8 +59,16 @@ public class AbsListViewQuickReturnAttacher
                 positionOffset = 1;
             else if (parent instanceof GridView)
                 // TODO: getNumColumns may return AUTO_FIT.
-                // TODO: Need fallback for Gingerbread.
-                positionOffset = ((GridView) parent).getNumColumns();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    positionOffset = ((GridView) parent).getNumColumns();
+                } else {
+                    Adapter adapter = absListView.getAdapter();
+                    if (adapter instanceof QuickReturnAdapter) {
+                        positionOffset = ((QuickReturnAdapter) absListView.getAdapter()).getNumColumns();
+                    } else {
+                        positionOffset = 0;
+                    }
+                }
             else
                 positionOffset = 0;
 
