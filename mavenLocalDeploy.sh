@@ -4,7 +4,7 @@ mvn install:install-file \
 -Dversion=$1 \
 -DgeneratePom=true \
 -Dpackaging=aar \
--Dfile=library/build/outputs/aar/library.aar \
+-Dfile=library/build/outputs/aar/library-release.aar \
 -DlocalRepositoryPath=/Users/felipecsl/Data/Projects/m2repository/
 
 mv /Users/felipecsl/Data/Projects/m2repository/com/felipecsl/quickreturn/$1/maven-metadata-local.xml \

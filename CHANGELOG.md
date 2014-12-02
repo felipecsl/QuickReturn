@@ -1,3 +1,7 @@
+# Version 1.5.0
+
+* Fixed onItemLongClick position offset issue
+
 # Version 1.4.0
 
 * Changed QuickReturnAttacher interface. ``QuickReturnAttacher.forView()`` should be used now.
