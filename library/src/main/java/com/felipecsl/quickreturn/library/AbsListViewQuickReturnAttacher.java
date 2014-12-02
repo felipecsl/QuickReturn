@@ -24,11 +24,11 @@ public class AbsListViewQuickReturnAttacher
         listView.setOnItemClickListener(this);
     }
 
-    public QuickReturnTargetView addTargetView(final View view, final int position) {
+    public QuickReturnTargetView addTargetView(View view, int position) {
         return addTargetView(view, position, 0);
     }
 
-    public QuickReturnTargetView addTargetView(final View view, final int position, final int viewHeight) {
+    public QuickReturnTargetView addTargetView(View view, int position, int viewHeight) {
         final AbsListViewScrollTarget targetView = new AbsListViewScrollTarget(absListView, view, position, viewHeight);
         onScrollListener.registerOnScrollListener(targetView);
 
@@ -48,7 +48,7 @@ public class AbsListViewQuickReturnAttacher
     }
 
     @Override
-    public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+    public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
         int positionOffset;
         if (onItemClickListener != null) {
             if (parent instanceof ListView)
