@@ -13,7 +13,7 @@ In your ``build.gradle`` file:
 ```groovy
 dependencies {
     // ...
-    compile 'com.felipecsl:quickreturn:1.5.0'
+    compile 'com.felipecsl.quickreturn:library:1.5.0'
 }
 ```
 
@@ -41,7 +41,7 @@ protected void onCreate(Bundle savedInstanceState) {
     adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
     // Wrap your adapter with QuickReturnAdapter
-    quickReturnListView.setAdapter(new QuickReturnAdapter(adapter));
+    listView.setAdapter(new QuickReturnAdapter(adapter));
 
     // Attach a QuickReturnAttacher, which takes care of all of the hide/show functionality.
     quickReturnAttacher = QuickReturnAttacher.forView(listView);
@@ -50,7 +50,7 @@ protected void onCreate(Bundle savedInstanceState) {
     // You can pass a position argument (POSITION_TOP or POSITION_BOTTOM).
     // You can also optionally pass the size of the target view, which will be used to 
     // offset the list height, preventing it from hiding content behind the target view.
-    quickReturnAttacher.addTargetView(textView, QuickReturnTargetView.POSITION_TOP, 50);
+    quickReturnAttacher.addTargetView(quickReturnTarget, QuickReturnTargetView.POSITION_TOP, 50);
 
     // If you need to add an OnScrollListener to the listView, this is the correct
     // way to do so.
