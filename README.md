@@ -1,5 +1,7 @@
 # QuickReturn
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-felipecsl%2FQuickReturn-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/697)
+
 Android ListView that implements the QuickReturn UI pattern. Written from scratch with focus on performance.
 
 ### Demo
