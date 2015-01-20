@@ -39,7 +39,9 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
 
     @Override
     public boolean isEnabled(final int position) {
-        return wrappedAdapter.isEnabled(position);
+        if (position < numColumns)
+            return true;
+        return wrappedAdapter.isEnabled(position - numColumns);
     }
 
     @Override
@@ -59,12 +61,16 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
 
     @Override
     public Object getItem(final int position) {
-        return wrappedAdapter.getItem(position);
+        if (position < numColumns)
+            return null;
+        return wrappedAdapter.getItem(position - numColumns);
     }
 
     @Override
     public long getItemId(final int position) {
-        return wrappedAdapter.getItemId(position);
+        if (position < numColumns)
+            return 0;
+        return wrappedAdapter.getItemId(position - numColumns);
     }
 
     @Override
@@ -106,7 +112,7 @@ public class QuickReturnAdapter extends DataSetObserver implements ListAdapter {
     public int getItemViewType(final int position) {
         if (position < numColumns)
             return wrappedAdapter.getViewTypeCount();
-        return wrappedAdapter.getItemViewType(position);
+        return wrappedAdapter.getItemViewType(position - numColumns);
     }
 
     @Override
