@@ -15,7 +15,7 @@ In your ``build.gradle`` file:
 ```groovy
 dependencies {
     // ...
-    compile 'com.felipecsl.quickreturn:library:1.5.0'
+    compile 'com.felipecsl.quickreturn:library:1.5.1'
 }
 ```
 
