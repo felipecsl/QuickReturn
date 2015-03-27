@@ -8,29 +8,29 @@ import android.widget.ScrollView;
  * A custom ScrollView that can accept a scroll listener.
  */
 public class ObservableScrollView extends ScrollView {
-    private OnScrollListener mCallbacks;
 
-    public ObservableScrollView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+  private OnScrollListener mCallbacks;
 
-    @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
-        if (mCallbacks != null)
-            mCallbacks.onScrollChanged(t);
-    }
+  public ObservableScrollView(Context context, AttributeSet attrs) {
+    super(context, attrs);
+  }
 
-    @Override
-    public int computeVerticalScrollRange() {
-        return super.computeVerticalScrollRange();
+  @Override protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+    super.onScrollChanged(l, t, oldl, oldt);
+    if (mCallbacks != null) {
+      mCallbacks.onScrollChanged(t);
     }
+  }
 
-    public void setOnScrollListener(OnScrollListener listener) {
-        mCallbacks = listener;
-    }
+  @Override public int computeVerticalScrollRange() {
+    return super.computeVerticalScrollRange();
+  }
 
-    public static interface OnScrollListener {
-        public void onScrollChanged(int scrollY);
-    }
+  public void setOnScrollListener(OnScrollListener listener) {
+    mCallbacks = listener;
+  }
+
+  public interface OnScrollListener {
+    void onScrollChanged(int scrollY);
+  }
 }
