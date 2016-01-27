@@ -10,12 +10,8 @@ import android.widget.ListView;
 import com.felipecsl.quickreturn.library.widget.AbsListViewScrollTarget;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 
-public class AbsListViewQuickReturnAttacher
-    extends QuickReturnAttacher
+public class AbsListViewQuickReturnAttacher extends QuickReturnAttacher
     implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
-
-  private static final String TAG = "AbsListViewQuickReturnAttacher";
-
   private final CompositeAbsListViewOnScrollListener onScrollListener =
       new CompositeAbsListViewOnScrollListener();
   private AbsListView.OnItemClickListener onItemClickListener;
@@ -34,8 +30,8 @@ public class AbsListViewQuickReturnAttacher
   }
 
   public QuickReturnTargetView addTargetView(View view, int position, int viewHeight) {
-    AbsListViewScrollTarget targetView = new AbsListViewScrollTarget(absListView, view,
-                                                                     position, viewHeight);
+    AbsListViewScrollTarget targetView =
+        new AbsListViewScrollTarget(absListView, view, position, viewHeight);
     onScrollListener.registerOnScrollListener(targetView);
 
     return targetView;
@@ -58,20 +54,20 @@ public class AbsListViewQuickReturnAttacher
   }
 
   @Override public void onItemClick(@NonNull AdapterView<?> parent, @NonNull View view,
-                                    int position, long id) {
+      int position, long id) {
     if (onItemClickListener != null) {
       // TODO: Sending incorrect view` and `id` args below.
       onItemClickListener.onItemClick(parent, view,
-                                      position - getClickPositionOffset(parent), id);
+          position - getClickPositionOffset(parent), id);
     }
   }
 
-  @Override public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-    int positionOffset;
+  @Override
+  public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
     if (onItemLongClickListener != null) {
       // TODO: Sending incorrect view` and `id` args below.
       onItemLongClickListener.onItemLongClick(parent, view,
-                                              position - getClickPositionOffset(parent), id);
+          position - getClickPositionOffset(parent), id);
     }
     return false;
   }
@@ -81,10 +77,9 @@ public class AbsListViewQuickReturnAttacher
       return 1;
     }
 
-    if (parent instanceof GridView)
     // TODO: getNumColumns may return AUTO_FIT.
     // TODO: Need fallback for Gingerbread.
-    {
+    if (parent instanceof GridView) {
       return ((GridView) parent).getNumColumns();
     }
 

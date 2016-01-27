@@ -4,8 +4,7 @@ import com.felipecsl.quickreturn.library.widget.ObservableScrollView;
 
 import java.util.ArrayList;
 
-public class CompositeOnScrollListener
-    extends ArrayList<ObservableScrollView.OnScrollListener>
+public class CompositeOnScrollListener extends ArrayList<ObservableScrollView.OnScrollListener>
     implements ObservableScrollView.OnScrollListener {
 
   public void registerOnScrollListener(final ObservableScrollView.OnScrollListener listener) {

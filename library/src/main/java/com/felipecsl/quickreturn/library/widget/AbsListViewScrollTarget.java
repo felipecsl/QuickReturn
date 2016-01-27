@@ -10,20 +10,18 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.WrapperListAdapter;
 
-public class AbsListViewScrollTarget
-    extends QuickReturnTargetView
+public class AbsListViewScrollTarget extends QuickReturnTargetView
     implements AbsListView.OnScrollListener {
 
   private final AbsListView listView;
 
-  public AbsListViewScrollTarget(AbsListView listView, View targetView,
-                                 int position) {
+  public AbsListViewScrollTarget(AbsListView listView, View targetView, int position) {
     this(listView, targetView, position, 0);
   }
 
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-  public AbsListViewScrollTarget(AbsListView listView, View targetView,
-                                 int position, int targetViewHeight) {
+  public AbsListViewScrollTarget(
+      AbsListView listView, View targetView, int position, int targetViewHeight) {
     super(targetView, position);
 
     this.listView = listView;
@@ -41,7 +39,7 @@ public class AbsListViewScrollTarget
     if (listView instanceof ListView) {
       adapter.setVerticalSpacing(((ListView) listView).getDividerHeight());
     } else if (listView instanceof GridView
-               && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
       adapter.setVerticalSpacing(((GridView) listView).getVerticalSpacing());
     }
   }
@@ -75,7 +73,7 @@ public class AbsListViewScrollTarget
   }
 
   @Override public void onScroll(@NonNull AbsListView view, int firstVisibleItem,
-                       int visibleItemCount, int totalItemCount) {
+      int visibleItemCount, int totalItemCount) {
     if (listView.getAdapter() == null || quickReturnView == null) {
       return;
     }
@@ -83,8 +81,8 @@ public class AbsListViewScrollTarget
     int maxVerticalOffset = getAdapter().getMaxVerticalOffset();
     int listViewHeight = listView.getHeight();
     int rawY = -Math.min(maxVerticalOffset > listViewHeight
-                               ? maxVerticalOffset - listViewHeight
-                               : listViewHeight, getComputedScrollY());
+        ? maxVerticalOffset - listViewHeight
+        : listViewHeight, getComputedScrollY());
 
     int translationY = currentTransition.determineState(rawY, quickReturnView.getHeight());
 

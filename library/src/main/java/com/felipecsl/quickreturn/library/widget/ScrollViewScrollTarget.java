@@ -19,28 +19,23 @@ package com.felipecsl.quickreturn.library.widget;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-public class ScrollViewScrollTarget
-    extends QuickReturnTargetView
+public class ScrollViewScrollTarget extends QuickReturnTargetView
     implements ObservableScrollView.OnScrollListener {
 
   private final ObservableScrollView scrollView;
-  private int quickReturnHeight;
   private int maxScrollY;
 
-  public ScrollViewScrollTarget(final ObservableScrollView scrollView, final View targetView,
-                                final int position, final int targetViewHeight) {
+  public ScrollViewScrollTarget(final ObservableScrollView scrollView, View targetView,
+      int position) {
     super(targetView, position);
     this.scrollView = scrollView;
-    scrollView.setOnScrollListener(this);
     scrollView.getViewTreeObserver().addOnGlobalLayoutListener(
-        new ViewTreeObserver.OnGlobalLayoutListener() {
-          @Override
-          public void onGlobalLayout() {
-            onScrollChanged(scrollView.getScrollY());
-            maxScrollY = scrollView.computeVerticalScrollRange() - scrollView.getHeight();
-            quickReturnHeight = quickReturnView.getHeight();
-          }
+      new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override public void onGlobalLayout() {
+          onScrollChanged(scrollView.getScrollY());
+          maxScrollY = scrollView.computeVerticalScrollRange() - scrollView.getHeight();
         }
+      }
     );
   }
 
@@ -58,8 +53,7 @@ public class ScrollViewScrollTarget
     scrollY = Math.min(maxScrollY, scrollY);
 
     int rawY = -scrollY;
-    final int translationY = currentTransition.determineState(rawY, quickReturnView.getHeight());
 
-    translateTo(translationY);
+    translateTo(currentTransition.determineState(rawY, quickReturnView.getHeight()));
   }
 }

@@ -11,7 +11,6 @@ import com.felipecsl.quickreturn.library.QuickReturnStateTransition;
 import com.felipecsl.quickreturn.library.SimpleAnimationListener;
 
 public abstract class QuickReturnTargetView {
-
   protected static final String TAG = "QuickReturnTargetView";
 
   protected static final int STATE_ONSCREEN = 0;
@@ -27,14 +26,11 @@ public abstract class QuickReturnTargetView {
   protected View quickReturnView;
   protected boolean noAnimation;
 
-  protected final SimpleQuickReturnStateTransition
-      defaultTransition =
+  protected final SimpleQuickReturnStateTransition defaultTransition =
       new SimpleQuickReturnStateTransition();
-  protected final AnimatedQuickReturnStateTransition
-      animatedTransition =
+  protected final AnimatedQuickReturnStateTransition animatedTransition =
       new AnimatedQuickReturnStateTransition();
-  protected final BottomQuickReturnStateTransition
-      bottomTransition =
+  protected final BottomQuickReturnStateTransition bottomTransition =
       new BottomQuickReturnStateTransition();
 
   protected QuickReturnStateTransition currentTransition;
@@ -66,8 +62,8 @@ public abstract class QuickReturnTargetView {
    */
   public void setPosition(int newPosition) {
     currentTransition = newPosition == POSITION_TOP
-                        ? defaultTransition
-                        : bottomTransition;
+        ? defaultTransition
+        : bottomTransition;
   }
 
   public boolean isAnimatedTransition() {
@@ -97,7 +93,6 @@ public abstract class QuickReturnTargetView {
   }
 
   class SimpleQuickReturnStateTransition implements QuickReturnStateTransition {
-
     public int determineState(int rawY, int quickReturnHeight) {
       int translationY = 0;
 
@@ -143,11 +138,9 @@ public abstract class QuickReturnTargetView {
   }
 
   class AnimatedQuickReturnStateTransition implements QuickReturnStateTransition {
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public int determineState(final int rawY, int quickReturnHeight) {
       int translationY = 0;
-
       switch (currentState) {
         case STATE_OFFSCREEN:
           if (rawY <= minRawY) {
@@ -179,8 +172,8 @@ public abstract class QuickReturnTargetView {
             minRawY = rawY;
 
           } else if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
-                      && quickReturnView.getTranslationY() != 0) &&
-                     !noAnimation) {
+              && quickReturnView.getTranslationY() != 0) &&
+              !noAnimation) {
 
             noAnimation = true;
             final TranslateAnimation anim = new TranslateAnimation(0, 0, -quickReturnHeight, 0);
@@ -230,7 +223,6 @@ public abstract class QuickReturnTargetView {
   }
 
   class BottomQuickReturnStateTransition implements QuickReturnStateTransition {
-
     public int determineState(final int _rawY, int quickReturnHeight) {
       int rawY = getComputedScrollY();
       int translationY = 0;

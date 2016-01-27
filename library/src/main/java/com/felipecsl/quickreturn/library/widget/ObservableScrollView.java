@@ -4,9 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
 
-/**
- * A custom ScrollView that can accept a scroll listener.
- */
+/** A custom ScrollView that can accept a scroll listener. */
 public class ObservableScrollView extends ScrollView {
 
   private OnScrollListener mCallbacks;

@@ -24,10 +24,8 @@ import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 
 public class MainActivity extends ActionBarActivity implements AbsListView.OnScrollListener,
-                                                               ActionBar.OnNavigationListener,
-                                                               View.OnClickListener,
-                                                               AdapterView.OnItemClickListener,
-                                                               AdapterView.OnItemLongClickListener {
+    ActionBar.OnNavigationListener, View.OnClickListener, AdapterView.OnItemClickListener,
+    AdapterView.OnItemLongClickListener {
 
   private ArrayAdapter<String> adapter;
   private int offset;
@@ -42,9 +40,9 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
     ActionBar actionBar = getSupportActionBar();
     actionBar.setTitle("");
     actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-    String[] actionBarItems = {"ListView", "GridView", "ScrollView"};
+    String[] actionBarItems = { "ListView", "GridView", "ScrollView" };
     SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this, R.layout.action_bar_spinner_text,
-                                                             actionBarItems);
+        actionBarItems);
 
     actionBar.setListNavigationCallbacks(spinnerAdapter, this);
 
@@ -70,8 +68,8 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
     QuickReturnAttacher quickReturnAttacher = QuickReturnAttacher.forView(viewGroup);
     quickReturnAttacher.addTargetView(bottomTextView, AbsListViewScrollTarget.POSITION_BOTTOM);
     topTargetView = quickReturnAttacher.addTargetView(topTextView,
-                                                      AbsListViewScrollTarget.POSITION_TOP,
-                                                      dpToPx(this, 50));
+        AbsListViewScrollTarget.POSITION_TOP,
+        dpToPx(this, 50));
 
     if (quickReturnAttacher instanceof AbsListViewQuickReturnAttacher) {
       // This is the correct way to register an OnScrollListener.
@@ -116,14 +114,14 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
     } else if (id == R.id.animated) {
       topTargetView.setAnimatedTransition(!topTargetView.isAnimatedTransition());
       item.setTitle(topTargetView.isAnimatedTransition() ? "Disable animated transition"
-                                                         : "Enable animated transition");
+          : "Enable animated transition");
       reset();
     } else if (id == R.id.bottom_view) {
       bottomTextView.setVisibility(bottomTextView.getVisibility() == View.GONE
-                                   ? View.VISIBLE : View.GONE);
+          ? View.VISIBLE : View.GONE);
     } else if (id == R.id.top_view) {
       topTextView.setVisibility(topTextView.getVisibility() == View.GONE
-                                ? View.VISIBLE : View.GONE);
+          ? View.VISIBLE : View.GONE);
     }
     return true;
   }
@@ -138,8 +136,9 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
 
   }
 
-  @Override public void onScroll(@NonNull AbsListView view, int firstVisibleItem, int visibleItemCount,
-                       int totalItemCount) {
+  @Override
+  public void onScroll(@NonNull AbsListView view, int firstVisibleItem, int visibleItemCount,
+      int totalItemCount) {
   }
 
   @Override public boolean onNavigationItemSelected(int itemPos, long itemId) {
@@ -169,12 +168,12 @@ public class MainActivity extends ActionBarActivity implements AbsListView.OnScr
   }
 
   @Override public void onItemClick(@NonNull AdapterView<?> parent, @NonNull View view,
-                                    int position, long id) {
+      int position, long id) {
     Toast.makeText(this, "Item " + position + " clicked", Toast.LENGTH_SHORT).show();
   }
 
   @Override public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
-                                           long id) {
+      long id) {
     Toast.makeText(this, "Item " + position + " long clicked", Toast.LENGTH_SHORT).show();
     return true;
   }

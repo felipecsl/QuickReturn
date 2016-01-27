@@ -9,11 +9,11 @@ import com.felipecsl.quickreturn.library.widget.ObservableScrollView;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 
 public abstract class QuickReturnAttacher {
-
   public static QuickReturnAttacher forView(ViewGroup viewGroup) {
     if (viewGroup instanceof AbsListView) {
       return new AbsListViewQuickReturnAttacher((AbsListView) viewGroup);
-    } else if (viewGroup instanceof ScrollView) {
+    }
+    if (viewGroup instanceof ScrollView) {
       return new ScrollViewQuickReturnAttacher((ObservableScrollView) viewGroup);
     }
 
